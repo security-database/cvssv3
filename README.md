@@ -15,7 +15,7 @@ PHP Class
 
 Initialization
 --------
-To utilize this class, first import MysqliDb.php into your project, and require it.
+To utilize this class, first import cvss.class.php into your project, and require it.
 ```php
 include_once('cvss.class.php');
 ```
