@@ -23,7 +23,6 @@ include_once('cvss.class.php');
 After that, create a new vector.
 ```php
 try {
-
 	$cvss = new \CVSSv3\Cvss();
 	$cvss->register("CVSS:3.0/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L");
 
@@ -37,20 +36,73 @@ You can now  get some informations :
 Get scores of every piece of the vector (array());
 ```php
 	print_r($cvss->scores);
-
+/*
+Array
+(
+    [AV] => 0.85
+    [AC] => 0.44
+    [PR] => 0.27
+    [UI] => 0.62
+    [C] => 0.22
+    [I] => 0.22
+    [A] => 0
+    [E] => 0.94
+    [RL] => 0.97
+    [CR] => 0.5
+    [IR] => 0.5
+    [MAV] => 0.62
+    [MAC] => 0.44
+    [MPR] => 0.62
+    [MUI] => 0.85
+    [MC] => 0.22
+    [MI] => 0.22
+    [MA] => 0.22
+    [RC] => 1
+    [AR] => 1
+)*/
 ```
 
 Get sub scores used in formula (array());
 ```php
 	print_r($cvss->calcul);
+/*
+Array
+(
+    [ISCbase] => 0.3916
+    [ISC] => 2.514072
+    [ESC] => 0.514634472
+    [BS] => 3.1
+    [TS] => 2.9
+    [MESC] => 1.181753232
+    [ISCmodified] => 0.382162
+    [MISS] => 2.45348004
+    [ES] => 3.4
+)	
+*/
 ```
 
 Get Formula with detail
 ```php
 	print_r($cvss->formula);
+
+/*
+Array
+(
+    [ISCbase] => 1 - ( ( 1 - 0.22 ) * ( 1 - 0.22 ) * ( 1 - 0 ) )
+    [ISC] => 6.42 * 0.3916
+    [ESC] => 8.22 * 0.85 * 0.44 * 0.27 * 0.62
+    [BS] => round_up( min( 10 , 2.514072 + 0.514634472 ) )
+    [TS] => round_up( 3.1 * 0.94 * 0.97 * 1)
+    [MESC] => 8.22 * 0.62 * 0.44 * 0.62 * 0.85
+    [ISCmodified] => min( 0.915, 1 - ( ( 1 - 0.22 * 0.5 ) * ( 1 - 0.22 * 0.5 ) * ( 1 - 0.22 * 1 ) ) )
+    [MISS] => 6.42 * 0.382162
+    [ES] => round_up(min(10 , (2.45348004 + 1.181753232 ) * 0.94 * 0.97 * 1),1)
+) */
 ```
 
 Get the vector
 ```php
 print_r($cvss->vector);
+
+/* CVSS:3.0/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L */
 ```
