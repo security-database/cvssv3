@@ -13,7 +13,7 @@
 namespace CVSSv3;
 
 /* Start use case */
-
+/*
 try {
 
 	$cvss = new \CVSSv3\Cvss();
@@ -28,7 +28,7 @@ try {
 } catch (Exception $e) {
 	print $e->getCode()." : ".$e->getMessage();
 }
-
+*/
 /* End use case */
 
 
