@@ -17,7 +17,6 @@ namespace CVSSv3;
 try {
 
 	$cvss = new \CVSSv3\Cvss();
-	
 
 	$cvss->register("CVSS:3.0/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L");
 	print_r($cvss->scores);
