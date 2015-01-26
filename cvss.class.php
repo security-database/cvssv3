@@ -37,7 +37,13 @@ Class Cvss {
 
 
 	public  $version = "preview 2";
+	public 	$scores = array();
+	public 	$calcul = array();
+	public 	$formula = array();
+	public  $vector = "";
 	
+	/*  *************  */
+
 	private $vector_input_array = array();
 
 	private $metrics_check_mandatory = array("AV"=>"[N,A,L,P]",
