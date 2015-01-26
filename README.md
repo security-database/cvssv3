@@ -104,3 +104,6 @@ print $cvss->vector;
    CVSS:3.0/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L 
 */
 ```
+
+####Contribute
+If you found any error on the class, please contact us at [info at security-database.com]()
