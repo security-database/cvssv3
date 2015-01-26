@@ -31,7 +31,7 @@ You can now get some informations :
 
 Get scores of every piece of the vector (array());
 ```php
-	print_r($cvss->scores);
+print_r($cvss->scores);
 /*
 Array
 (
@@ -60,7 +60,7 @@ Array
 
 Get sub scores used in formula (array());
 ```php
-	print_r($cvss->calcul);
+print_r($cvss->calcul);
 /*
 Array
 (
@@ -79,7 +79,7 @@ Array
 
 Get Formula with detail
 ```php
-	print_r($cvss->formula);
+print_r($cvss->formula);
 
 /*
 Array
