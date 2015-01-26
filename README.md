@@ -106,4 +106,4 @@ print $cvss->vector;
 ```
 
 ####Contribute
-If you found any error on the class, please contact us at [info at security-database.com]()
+If you found any error on the class, please contact us at "info at security-database.com"
