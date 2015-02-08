@@ -23,12 +23,14 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
 */
 namespace CVSSv3;
+use Exception;
 
 /* Start use case */
-
+/*
+$cvss = new \CVSSv3\Cvss();
 try {
 
-	$cvss = new \CVSSv3\Cvss();
+
 
 	$cvss->register("CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N");
 	print_r($cvss->scores);
@@ -39,7 +41,7 @@ try {
 } catch (Exception $e) {
 	print $e->getCode()." : ".$e->getMessage();
 }
-
+*/
 /* End use case */
 
 
