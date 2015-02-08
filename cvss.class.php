@@ -25,12 +25,12 @@
 namespace CVSSv3;
 
 /* Start use case */
-/*
+
 try {
 
 	$cvss = new \CVSSv3\Cvss();
 
-	$cvss->register("CVSS:3.0/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L");
+	$cvss->register("CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N");
 	print_r($cvss->scores);
 	print_r($cvss->calcul);
 	print_r($cvss->formula);
@@ -39,7 +39,7 @@ try {
 } catch (Exception $e) {
 	print $e->getCode()." : ".$e->getMessage();
 }
-*/
+
 /* End use case */
 
 
@@ -182,9 +182,13 @@ Class Cvss {
 						if (isset($this->metrics_level_mandatory[$metric][$value])) { 
 							$this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value]["Scope"];
 						}
-					} else {
+					} elseif ($this->vector_input_array["S"] == "U" && ($value == "L" || $value == "H") ) {
 						if (isset($this->metrics_level_mandatory[$metric][$value])) { 
 							$this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value]["Default"];
+						}
+					} else {
+						if (isset($this->metrics_level_mandatory[$metric][$value])) { 
+							$this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value];
 						}
 					}
 				} else {
@@ -207,19 +211,23 @@ Class Cvss {
 			if ($metric != 'S') {
 				if ($metric == "MPR") {
 					if ($this->vector_input_array["MS"] == "C" && ($value == "L" || $value == "H") ) {
-						if (isset($this->metrics_level_modified[$metric][$value])) { 
-							$this->scores[$metric] = $this->metrics_level_modified[$metric][$value]["Scope"];
+						if (isset($this->metrics_level_mandatory[$metric][$value])) { 
+							$this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value]["Scope"];
+						}
+					} elseif ($this->vector_input_array["MS"] == "U" && ($value == "L" || $value == "H") ) {
+						if (isset($this->metrics_level_mandatory[$metric][$value])) { 
+							$this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value]["Default"];
 						}
 					} else {
-						if (isset($this->metrics_level_modified[$metric][$value])) { 
-							$this->scores[$metric] = $this->metrics_level_modified[$metric][$value]["Default"];
+						if (isset($this->metrics_level_mandatory[$metric][$value])) { 
+							$this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value];
 						}
 					}
 				} else {
-					if (isset($this->metrics_level_modified[$metric][$value])) { 
-						$this->scores[$metric] = $this->metrics_level_modified[$metric][$value];
+					if (isset($this->metrics_level_mandatory[$metric][$value])) { 
+						$this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value];
 					}
-				}	
+				}		
 			}
 		}
 
