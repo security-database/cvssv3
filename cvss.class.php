@@ -1,6 +1,6 @@
 <?php
 /**
- * Common Vulnerability Scoring System Version 3.0 Calculator [Preview 2]
+ * Common Vulnerability Scoring System Version 3.0 Calculator
  *
  * Copyright [2015] [Security-Database]
  *
@@ -49,7 +49,7 @@ try {
 Class Cvss {
 
 
-	public  $version = "preview 2";
+	public  $version = "3.0";
 	public 	$scores = array();
 	public 	$calcul = array();
 	public 	$formula = array();
