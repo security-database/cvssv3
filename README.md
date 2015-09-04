@@ -1,4 +1,4 @@
-##PHP Class for CVSS Calculator v3
+##PHP Class for CVSS v3 Calculator
 
 ###Common Vulnerability Scoring System Version 3.0
 
