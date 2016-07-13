@@ -1,0 +1,26 @@
+{
+  "name": "SecurityDatabase/Cvss",
+  "type": "library",
+  "description": "Common Vulnerability Scoring System Version 3.0",
+  "keywords": ["log","logging"],
+  "homepage": "https://github.com/security-database/cvssv3",
+  "license": "APACHE 2.0",
+  "authors": [
+    {
+      "name": "Security-Database",
+      "email": "info@security-database.com",
+      "homepage": "https://www.security-database.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.0.*"
+  },
+  "autoload": {
+    "classmap": [
+      "src/Cvss3.php"
+    ]
+  }
+}

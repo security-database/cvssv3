@@ -10,15 +10,15 @@ This piece of software is under [Apache License 2.0](http://www.apache.org/licen
 ###PHP Class
 
 ####Initialization
-To utilize this class, first import cvss.class.php into your project, and require it.
+To utilize this class, first import cvss.class.php into your project, and require it. or Autoload with composer.
 ```php
-include_once('cvss.class.php');
+include_once('Cvss3.php');
 ```
 
 After that, create a new vector.
 ```php
 try {
-	$cvss = new \CVSSv3\Cvss();
+	$cvss = new SecurityDatabase\Cvss\Cvss3();
 	$cvss->register("CVSS:3.0/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L");
 
 } catch (Exception $e) {

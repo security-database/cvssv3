@@ -16,37 +16,38 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *
- *  @desc Class to get and calculate CVSS v3 scores
- *  @author Security-Database <info@security-database.com>
- *  @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *  @version 1.1
- *  @package CVSSv3
+ * @desc Class to get and calculate CVSS v3 scores
+ * @author Security-Database <info@security-database.com>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @version 1.2.0
+ * @package CVSSv3
  */
 
 /* Start use case */
-    /*
-    $cvss = new \CVSSv3\Cvss();
-    try {
-        $cvss->register("CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N");
-        print_r($cvss->scores);
-        print_r($cvss->calcul);
-        print_r($cvss->formula);
-        print_r($cvss->vector);
+/*
+$cvss = new SecurityDatabase\Cvss\Cvss3();
+try {
+    $cvss->register("CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N");
+    print_r($cvss->scores);
+    print_r($cvss->calcul);
+    print_r($cvss->formula);
+    print_r($cvss->vector);
 
-    } catch (Exception $e) {
-        print $e->getCode()." : ".$e->getMessage();
-    }
-    */
+} catch (Exception $e) {
+    print $e->getCode()." : ".$e->getMessage();
+}
+*/
 
 /* End use case */
 
-namespace CVSSv3;
+namespace SecurityDatabase\Cvss;
 
 use Exception;
 
-class Cvss
+class Cvss3
 {
-    public $version = "3.0";
+    const VERSION = '3.0';
+
     public $scores = array();
     public $calcul = array();
     public $formula = array();
@@ -59,14 +60,14 @@ class Cvss
         "AC" => "[L,H]",
         "PR" => "[N,L,H]",
         "UI" => "[N,R]",
-        "S" => "[U,C]",
-        "C" => "[N,L,H]",
-        "I" => "[N,L,H]",
-        "A" => "[N,L,H]"
+        "S"  => "[U,C]",
+        "C"  => "[N,L,H]",
+        "I"  => "[N,L,H]",
+        "A"  => "[N,L,H]"
     );
 
     private $metrics_check_optional = array(
-        "E" => "[X,U,P,F,H]",
+        "E"  => "[X,U,P,F,H]",
         "RL" => "[X,O,T,W,U]",
         "RC" => "[X,U,R,C]",
         "CR" => "[X,L,M,H]",
@@ -79,10 +80,10 @@ class Cvss
         "MAC" => "[X,L,H]",
         "MPR" => "[X,N,L,H]",
         "MUI" => "[X,N,R]",
-        "MS" => "[X,U,C]",
-        "MC" => "[X,N,L,H]",
-        "MI" => "[X,N,L,H]",
-        "MA" => "[X,N,L,H]"
+        "MS"  => "[X,U,C]",
+        "MC"  => "[X,N,L,H]",
+        "MI"  => "[X,N,L,H]",
+        "MA"  => "[X,N,L,H]"
     );
 
     private $metrics_level_mandatory = array(
@@ -100,28 +101,28 @@ class Cvss
             "N" => '0.85',
             "L" => array(
                 "Default" => '0.62',
-                "Scope" => '0.68'
+                "Scope"   => '0.68'
             ),
             "H" => array(
                 "Default" => '0.27',
-                "Scope" => '0.50'
+                "Scope"   => '0.50'
             )
         ),
         "UI" => array(
             "N" => '0.85',
             "R" => '0.62'
         ),
-        "C" => array(
+        "C"  => array(
             "N" => '0',
             "L" => '0.22',
             "H" => '0.56'
         ),
-        "I" => array(
+        "I"  => array(
             "N" => '0',
             "L" => '0.22',
             "H" => '0.56'
         ),
-        "A" => array(
+        "A"  => array(
             "N" => '0',
             "L" => '0.22',
             "H" => '0.56'
@@ -129,7 +130,7 @@ class Cvss
     );
 
     private $metrics_level_optional = array(
-        "E" => array(
+        "E"  => array(
             "X" => '1',
             "U" => '0.91',
             "P" => '0.94',
@@ -187,11 +188,11 @@ class Cvss
             "N" => '0.85',
             "L" => array(
                 "Default" => '0.62',
-                "Scope" => '0.68'
+                "Scope"   => '0.68'
             ),
             "H" => array(
                 "Default" => '0.27',
-                "Scope" => '0.50'
+                "Scope"   => '0.50'
             )
         ),
         "MUI" => array(
@@ -199,19 +200,19 @@ class Cvss
             "N" => '0.85',
             "R" => '0.62'
         ),
-        "MC" => array(
+        "MC"  => array(
             "X" => '0',
             "N" => '0',
             "L" => '0.22',
             "H" => '0.56'
         ),
-        "MI" => array(
+        "MI"  => array(
             "X" => '0',
             "N" => '0',
             "L" => '0.22',
             "H" => '0.56'
         ),
-        "MA" => array(
+        "MA"  => array(
             "X" => '0',
             "N" => '0',
             "L" => '0.22',
@@ -225,6 +226,9 @@ class Cvss
      */
     public function register($vector)
     {
+        if (strlen($vector) == 0) {
+            throw new Exception("ERROR: Vector is not defined");
+        }
         self::explodeVector($vector);
         self::checkMandatory();
         self::checkOptional();
@@ -236,9 +240,13 @@ class Cvss
 
     /**
      * @param string $vector
+     * @throws Exception
      */
     private function explodeVector($vector)
     {
+        if (preg_match('/^CVSS:3.0.*/mi', $vector) == false) {
+            throw new Exception("ERROR: Vector is not valid");
+        }
         $vector = str_replace("CVSS:3.0/", "", $vector);
         $vector_input_array_temp = explode('/', $vector);
 
@@ -402,7 +410,8 @@ class Cvss
             $this->calcul["ISC"] = 6.42 * $this->calcul["ISCbase"];
             $this->formula["ISC"] = "6.42 * " . $this->calcul["ISCbase"];
         } elseif ($this->vector_input_array["S"] == 'C') {
-            $this->calcul["ISC"] = 7.52 * ($this->calcul["ISCbase"] - 0.029) - 3.25 * pow(($this->calcul["ISCbase"] - 0.02), 15);
+            $this->calcul["ISC"] = 7.52 * ($this->calcul["ISCbase"] - 0.029) - 3.25 * pow(($this->calcul["ISCbase"] - 0.02),
+                    15);
             $this->formula["ISC"] = "7.52 * ( " . $this->calcul["ISCbase"] . " - 0.029 ) - 3.25 * pow(( " . $this->calcul["ISCbase"] . " - 0.02 ),15)";
         } else {
             throw new Exception("ERROR: on Scope", __LINE__);
@@ -448,7 +457,8 @@ class Cvss
          * Temporal score
          */
 
-        $this->calcul["TS"] = self::roundUp($this->calcul["BS"] * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"], 1);
+        $this->calcul["TS"] = self::roundUp($this->calcul["BS"] * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"],
+            1);
         $this->formula["TS"] = "roundUp( " . $this->calcul["BS"] . " * " . $this->scores["E"] . " * " . $this->scores["RL"] . " * " . $this->scores["RC"] . ")";
 
         /**
@@ -466,14 +476,16 @@ class Cvss
          * Modified Impact Sub score
          */
 
-        $this->calcul["ISCmodified"] = min(0.915, 1 - ((1 - $this->scores["MC"] * $this->scores["CR"]) * (1 - $this->scores["MI"] * $this->scores["IR"]) * (1 - $this->scores["MA"] * $this->scores["AR"])));
+        $this->calcul["ISCmodified"] = min(0.915,
+            1 - ((1 - $this->scores["MC"] * $this->scores["CR"]) * (1 - $this->scores["MI"] * $this->scores["IR"]) * (1 - $this->scores["MA"] * $this->scores["AR"])));
         $this->formula["ISCmodified"] = "min( 0.915, 1 - ( ( 1 - " . $this->scores["MC"] . " * " . $this->scores["CR"] . " ) * ( 1 - " . $this->scores["MI"] . " * " . $this->scores["IR"] . " ) * ( 1 - " . $this->scores["MA"] . " * " . $this->scores["AR"] . " ) ) )";
 
         if ($this->vector_input_array["S"] == 'U') {
             $this->calcul["MISS"] = 6.42 * $this->calcul["ISCmodified"];
             $this->formula["MISS"] = "6.42 * " . $this->calcul["ISCmodified"];
         } elseif ($this->vector_input_array["S"] == 'C') {
-            $this->calcul["MISS"] = 7.52 * ($this->calcul["ISCmodified"] - 0.029) - 3.25 * pow(($this->calcul["ISCmodified"] - 0.02), 15);
+            $this->calcul["MISS"] = 7.52 * ($this->calcul["ISCmodified"] - 0.029) - 3.25 * pow(($this->calcul["ISCmodified"] - 0.02),
+                    15);
             $this->formula["MISS"] = "7.52 * ( " . $this->calcul["ISCmodified"] . " - 0.029 ) - 3.25 * pow(( " . $this->calcul["ISCmodified"] . " - 0.02 ),15)";
         } else {
             throw new Exception("ERROR: on Modified Impact Sub score calcul", __LINE__);
@@ -487,10 +499,14 @@ class Cvss
             $this->calcul["ES"] = 0;
             $this->formula["ES"] = "0";
         } elseif ($this->calcul["MISS"] > 0 && $this->vector_input_array["S"] == 'U') {
-            $this->calcul["ES"] = self::roundUp(min(10, ($this->calcul["MISS"] + $this->calcul["MESC"]) * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"]), 1);
+            $this->calcul["ES"] = self::roundUp(min(10,
+                ($this->calcul["MISS"] + $this->calcul["MESC"]) * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"]),
+                1);
             $this->formula["ES"] = "roundUp(min(10 , (" . $this->calcul["MISS"] . " + " . $this->calcul["MESC"] . " ) * " . $this->scores["E"] . " * " . $this->scores["RL"] . " * " . $this->scores["RC"] . "),1)";
         } elseif ($this->calcul["MISS"] > 0 && $this->vector_input_array["S"] == 'C') {
-            $this->calcul["ES"] = self::roundUp(min(10, 1.08 * ($this->calcul["MISS"] + $this->calcul["MESC"]) * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"]), 1);
+            $this->calcul["ES"] = self::roundUp(min(10,
+                1.08 * ($this->calcul["MISS"] + $this->calcul["MESC"]) * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"]),
+                1);
             $this->formula["ES"] = "roundUp(min(10 , 1.08 * (" . $this->calcul["MISS"] . " + " . $this->calcul["MESC"] . " ) * " . $this->scores["E"] . " * " . $this->scores["RL"] . " * " . $this->scores["RC"] . "),1)";
         } else {
             throw new Exception("ERROR: on Environmental Score calcul", __LINE__);
