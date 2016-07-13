@@ -12,7 +12,14 @@ This piece of software is under [Apache License 2.0](http://www.apache.org/licen
 ###PHP Class
 
 ####Initialization
-To utilize this class, first import cvss.class.php into your project, and require it. or Autoload with composer.
+
+Could be composer:
+
+```php
+composer require security-database/cvss
+```
+
+or traditional include class into your project, and include it.
 ```php
 include_once('Cvss3.php');
 ```
