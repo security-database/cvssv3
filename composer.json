@@ -4,7 +4,7 @@
   "description": "Common Vulnerability Scoring System Version 3.0",
   "keywords": ["log","logging"],
   "homepage": "https://github.com/security-database/cvssv3",
-  "license": "APACHE 2.0",
+  "license": "Apache-2.0",
   "authors": [
     {
       "name": "Security-Database",
