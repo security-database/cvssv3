@@ -2,6 +2,11 @@
 
 [![Build Status](https://travis-ci.org/security-database/cvssv3.svg?branch=master)](https://travis-ci.org/security-database/cvssv3)
 
+[![Latest Stable Version](https://poser.pugx.org/security-database/cvss/version)](https://packagist.org/packages/security-database/cvss)
+[![Total Downloads](https://poser.pugx.org/security-database/cvss/downloads)](https://packagist.org/packages/security-database/cvss)
+[![Latest Unstable Version](https://poser.pugx.org/security-database/cvss/v/unstable)](//packagist.org/packages/security-database/cvss)
+[![License](https://poser.pugx.org/security-database/cvss/license)](https://packagist.org/packages/security-database/cvss)
+
 ###Common Vulnerability Scoring System Version 3.0
 
 Common Vulnerability Scoring System (CVSS) is a free and open industry standard for assessing the severity of computer system security vulnerabilities. It is under the custodianship of NIST. It attempts to establish a measure of how much concern a vulnerability warrants, compared to other vulnerabilities, so efforts can be prioritized. The scores are based on a series of measurements (called metrics) based on expert assessment. The scores range from 0 to 10. Vulnerabilities with a base score in the range 7.0-10.0 are High, those in the range 4.0-6.9 as Medium, and 0-3.9 as Low. Class try to follow PSR2 standard except for some 120chars on formula.
