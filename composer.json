@@ -1,5 +1,5 @@
 {
-  "name": "SecurityDatabase/Cvss",
+  "name": "security-database/cvss",
   "type": "library",
   "description": "Common Vulnerability Scoring System Version 3.0",
   "keywords": ["log","logging"],
