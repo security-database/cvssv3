@@ -19,7 +19,7 @@
  * @desc Class to get and calculate CVSS v3 scores
  * @author Security-Database <info@security-database.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- * @version 1.2.0
+ * @version 1.3.0
  * @package CVSSv3
  */
 
@@ -307,58 +307,55 @@ class Cvss3
      */
     private function constructScores()
     {
+        //Mandatory
         foreach ($this->vector_input_array as $metric => $value) {
-            if ($metric != 'S' || $metric != 'MS') {
-                if ($metric == "PR") {
-                    if ($this->vector_input_array["S"] == "C" && ($value == "L" || $value == "H")) {
-                        if (isset($this->metrics_level_mandatory[$metric][$value])) {
-                            $this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value]["Scope"];
-                        }
-                    } elseif ($this->vector_input_array["S"] == "U" && ($value == "L" || $value == "H")) {
-                        if (isset($this->metrics_level_mandatory[$metric][$value])) {
-                            $this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value]["Default"];
-                        }
-                    } else {
-                        if (isset($this->metrics_level_mandatory[$metric][$value])) {
-                            $this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value];
-                        }
+            if ($metric == "PR") {
+                if ($this->vector_input_array["S"] == "C" && ($value == "L" || $value == "H")) {
+                    if (isset($this->metrics_level_mandatory[$metric][$value])) {
+                        $this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value]["Scope"];
+                    }
+                } elseif ($this->vector_input_array["S"] == "U" && ($value == "L" || $value == "H")) {
+                    if (isset($this->metrics_level_mandatory[$metric][$value])) {
+                        $this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value]["Default"];
                     }
                 } else {
                     if (isset($this->metrics_level_mandatory[$metric][$value])) {
                         $this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value];
                     }
                 }
-            }
-        }
-
-        foreach ($this->vector_input_array as $metric => $value) {
-            if ($metric != 'S') {
-                if (isset($this->metrics_level_optional[$metric][$value])) {
-                    $this->scores[$metric] = $this->metrics_level_optional[$metric][$value];
+            } else {
+                if (isset($this->metrics_level_mandatory[$metric][$value])) {
+                    $this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value];
                 }
             }
         }
 
+        //Optional
         foreach ($this->vector_input_array as $metric => $value) {
-            if ($metric != 'S') {
-                if ($metric == "MPR") {
-                    if ($this->vector_input_array["MS"] == "C" && ($value == "L" || $value == "H")) {
-                        if (isset($this->metrics_level_mandatory[$metric][$value])) {
-                            $this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value]["Scope"];
-                        }
-                    } elseif ($this->vector_input_array["MS"] == "U" && ($value == "L" || $value == "H")) {
-                        if (isset($this->metrics_level_mandatory[$metric][$value])) {
-                            $this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value]["Default"];
-                        }
-                    } else {
-                        if (isset($this->metrics_level_mandatory[$metric][$value])) {
-                            $this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value];
-                        }
+            if (isset($this->metrics_level_optional[$metric][$value])) {
+                $this->scores[$metric] = $this->metrics_level_optional[$metric][$value];
+            }
+        }
+
+        //Modified
+        foreach ($this->vector_input_array as $metric => $value) {
+            if ($metric == "MPR") {
+                if ($this->vector_input_array["MS"] == "C" && ($value == "L" || $value == "H")) {
+                    if (isset($this->metrics_level_modified[$metric][$value])) {
+                        $this->scores[$metric] = $this->metrics_level_modified[$metric][$value]["Scope"];
+                    }
+                } elseif ($this->vector_input_array["MS"] == "U" && ($value == "L" || $value == "H")) {
+                    if (isset($this->metrics_level_modified[$metric][$value])) {
+                        $this->scores[$metric] = $this->metrics_level_modified[$metric][$value]["Default"];
                     }
                 } else {
-                    if (isset($this->metrics_level_mandatory[$metric][$value])) {
-                        $this->scores[$metric] = $this->metrics_level_mandatory[$metric][$value];
+                    if (isset($this->metrics_level_modified[$metric][$value])) {
+                        $this->scores[$metric] = $this->metrics_level_modified[$metric][$value];
                     }
+                }
+            } else {
+                if (isset($this->metrics_level_modified[$metric][$value])) {
+                    $this->scores[$metric] = $this->metrics_level_modified[$metric][$value];
                 }
             }
         }
@@ -375,7 +372,6 @@ class Cvss3
                 $this->scores[$metric] = $this->metrics_level_optional[$metric]["X"];
             }
         }
-
 
         foreach ($this->metrics_level_modified as $metric => $level) {
             if (isset($this->scores[$metric]) == false) {
@@ -410,8 +406,7 @@ class Cvss3
             $this->calcul["ISC"] = 6.42 * $this->calcul["ISCbase"];
             $this->formula["ISC"] = "6.42 * " . $this->calcul["ISCbase"];
         } elseif ($this->vector_input_array["S"] == 'C') {
-            $this->calcul["ISC"] = 7.52 * ($this->calcul["ISCbase"] - 0.029) - 3.25 * pow(($this->calcul["ISCbase"] - 0.02),
-                    15);
+            $this->calcul["ISC"] = 7.52 * ($this->calcul["ISCbase"] - 0.029) - 3.25 * pow(($this->calcul["ISCbase"] - 0.02), 15);
             $this->formula["ISC"] = "7.52 * ( " . $this->calcul["ISCbase"] . " - 0.029 ) - 3.25 * pow(( " . $this->calcul["ISCbase"] . " - 0.02 ),15)";
         } else {
             throw new Exception("ERROR: on Scope", __LINE__);
@@ -441,13 +436,7 @@ class Cvss3
             );
             $this->formula["BS"] = "roundUp( min( 10 , " . $this->calcul["ISC"] . " + " . $this->calcul["ESC"] . " ) )";
         } elseif ($this->calcul["ISC"] > 0 && $this->vector_input_array["S"] == 'C') {
-            $this->calcul["BS"] = self::roundUp(
-                min(
-                    10,
-                    1.08 * ($this->calcul["ISC"] + $this->calcul["ESC"])
-                ),
-                1
-            );
+            $this->calcul["BS"] = self::roundUp( min( 10, 1.08 * ($this->calcul["ISC"] + $this->calcul["ESC"]) ), 1 );
             $this->formula["BS"] = "roundUp( min( 10 , 1.08 * ( " . $this->calcul["ISC"] . " + " . $this->calcul["ESC"] . " ) ) )";
         } else {
             throw new Exception("ERROR: on Base Score calcul", __LINE__);
@@ -457,8 +446,7 @@ class Cvss3
          * Temporal score
          */
 
-        $this->calcul["TS"] = self::roundUp($this->calcul["BS"] * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"],
-            1);
+        $this->calcul["TS"] = self::roundUp($this->calcul["BS"] * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"], 1);
         $this->formula["TS"] = "roundUp( " . $this->calcul["BS"] . " * " . $this->scores["E"] . " * " . $this->scores["RL"] . " * " . $this->scores["RC"] . ")";
 
         /**
@@ -476,40 +464,27 @@ class Cvss3
          * Modified Impact Sub score
          */
 
-        $this->calcul["ISCmodified"] = min(0.915,
-            1 - ((1 - $this->scores["MC"] * $this->scores["CR"]) * (1 - $this->scores["MI"] * $this->scores["IR"]) * (1 - $this->scores["MA"] * $this->scores["AR"])));
+        $this->calcul["ISCmodified"] = min(0.915, 1 - ((1 - $this->scores["MC"] * $this->scores["CR"]) * (1 - $this->scores["MI"] * $this->scores["IR"]) * (1 - $this->scores["MA"] * $this->scores["AR"])));
         $this->formula["ISCmodified"] = "min( 0.915, 1 - ( ( 1 - " . $this->scores["MC"] . " * " . $this->scores["CR"] . " ) * ( 1 - " . $this->scores["MI"] . " * " . $this->scores["IR"] . " ) * ( 1 - " . $this->scores["MA"] . " * " . $this->scores["AR"] . " ) ) )";
 
-        if ($this->vector_input_array["S"] == 'U') {
+        if (isset($this->vector_input_array["MS"]) == true && ( $this->vector_input_array["MS"] == 'U' || ($this->vector_input_array["MS"] == 'X' && $this->vector_input_array["S"] == 'U')) ) {
             $this->calcul["MISS"] = 6.42 * $this->calcul["ISCmodified"];
             $this->formula["MISS"] = "6.42 * " . $this->calcul["ISCmodified"];
-        } elseif ($this->vector_input_array["S"] == 'C') {
-            $this->calcul["MISS"] = 7.52 * ($this->calcul["ISCmodified"] - 0.029) - 3.25 * pow(($this->calcul["ISCmodified"] - 0.02),
-                    15);
-            $this->formula["MISS"] = "7.52 * ( " . $this->calcul["ISCmodified"] . " - 0.029 ) - 3.25 * pow(( " . $this->calcul["ISCmodified"] . " - 0.02 ),15)";
         } else {
-            throw new Exception("ERROR: on Modified Impact Sub score calcul", __LINE__);
+            $this->calcul["MISS"] = 7.52 * ($this->calcul["ISCmodified"] - 0.029) - 3.25 * pow(($this->calcul["ISCmodified"] - 0.02), 15);
+            $this->formula["MISS"] = "7.52 * ( " . $this->calcul["ISCmodified"] . " - 0.029 ) - 3.25 * pow(( " . $this->calcul["ISCmodified"] . " - 0.02 ),15)";
         }
 
         /**
          * Environmental Score
          */
 
-        if ($this->calcul["MISS"] <= 0) {
-            $this->calcul["ES"] = 0;
-            $this->formula["ES"] = "0";
-        } elseif ($this->calcul["MISS"] > 0 && $this->vector_input_array["S"] == 'U') {
-            $this->calcul["ES"] = self::roundUp(min(10,
-                ($this->calcul["MISS"] + $this->calcul["MESC"]) * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"]),
-                1);
+        if (isset($this->vector_input_array["MS"]) == true && ( $this->vector_input_array["MS"] == 'U' || ($this->vector_input_array["MS"] == 'X' && $this->vector_input_array["S"] == 'U'))) {
+            $this->calcul["ES"] = self::roundUp(min(10, ($this->calcul["MISS"] + $this->calcul["MESC"]) * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"]), 1);
             $this->formula["ES"] = "roundUp(min(10 , (" . $this->calcul["MISS"] . " + " . $this->calcul["MESC"] . " ) * " . $this->scores["E"] . " * " . $this->scores["RL"] . " * " . $this->scores["RC"] . "),1)";
-        } elseif ($this->calcul["MISS"] > 0 && $this->vector_input_array["S"] == 'C') {
-            $this->calcul["ES"] = self::roundUp(min(10,
-                1.08 * ($this->calcul["MISS"] + $this->calcul["MESC"]) * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"]),
-                1);
-            $this->formula["ES"] = "roundUp(min(10 , 1.08 * (" . $this->calcul["MISS"] . " + " . $this->calcul["MESC"] . " ) * " . $this->scores["E"] . " * " . $this->scores["RL"] . " * " . $this->scores["RC"] . "),1)";
         } else {
-            throw new Exception("ERROR: on Environmental Score calcul", __LINE__);
+            $this->calcul["ES"] = self::roundUp(min(10, 1.08 * ($this->calcul["MISS"] + $this->calcul["MESC"]) * $this->scores["E"] * $this->scores["RL"] * $this->scores["RC"]), 1);
+            $this->formula["ES"] = "roundUp(min(10 , 1.08 * (" . $this->calcul["MISS"] . " + " . $this->calcul["MESC"] . " ) * " . $this->scores["E"] . " * " . $this->scores["RL"] . " * " . $this->scores["RC"] . "),1)";
         }
     }
 
