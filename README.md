@@ -78,37 +78,67 @@ array (size=20)
 */
 ```
 
-Get sub scores used in scores (array());
+Get scores used in scores (array());
 ```php
 print_r($cvss->scores);
 /*
-array (size=9)
-  'impactSubScoreMultiplier' => float 0.3916
-  'impactSubScore' => float 2.514072
-  'exploitabalitySubScore' => float 0.514634472
-  'baseScore' => float 3.1
-  'temporalScore' => float 2.9
-  'envModifiedExploitabalitySubScore' => float 1.181753232
-  'envImpactSubScoreMultiplier' => float 0.382162
-  'envModifiedImpactSubScore' => float 2.45348004
-  'envScore' => float 3.4
+array (size=7)
+  'baseScore' => float 6.7
+  'impactSubScore' => float 5.7576309677951
+  'exploitabalitySubScore' => float 0.3924228
+  'temporalScore' => string 'NA' (length=2)
+  'envScore' => string 'NA' (length=2)
+  'envModifiedImpactSubScore' => string 'NA' (length=2)
+  'overallScore' => float 6.7
 */
 ```
 
-Get sub scores with label (en_US) used in scoresLabel (array());
+Get scores with label (en_US) used in scoresLabel (array());
+```php
+print_r($cvss->scoresLabel);
+/*
+array (size=7)
+  'Base Score' => float 6.7
+  'impact SubScore' => float 5.7576309677951
+  'Exploitabality Sub Score' => float 0.3924228
+  'Temporal Score' => string 'NA' (length=2)
+  'Environmental Score' => string 'NA' (length=2)
+  'Environmental Modified Impact SubScore' => string 'NA' (length=2)
+  'Overall CVSS Score' => float 6.7
+*/
+```
+
+Get sub scores used in sub_scores (array());
 ```php
 print_r($cvss->scores);
 /*
 array (size=9)
-  'Impact SubScore Multiplier' => float 0.3916
-  'impact SubScore' => float 2.514072
-  'Exploitabality Sub Score' => float 0.514634472
-  'Base Score' => float 3.1
-  'Temporal Score' => float 2.9
-  'Environmental Modified Exploitabality SubScore' => float 1.181753232
-  'Environmental Impact SubScore Multiplier' => float 0.382162
-  'Environmental Modified Impact SubScore' => float 2.45348004
-  'Environmental Score' => float 3.4
+  'impactSubScoreMultiplier' => float 0.8064
+  'impactSubScore' => float 5.7576309677951
+  'exploitabalitySubScore' => float 0.3924228
+  'baseScore' => float 6.7
+  'temporalScore' => float 6.7
+  'envModifiedExploitabalitySubScore' => float 0.3924228
+  'envImpactSubScoreMultiplier' => float 0.8064
+  'envModifiedImpactSubScore' => float 5.7576309677951
+  'envScore' => float 6.7
+*/
+```
+
+Get sub scores with label (en_US) used in sub_scoresLabel (array());
+```php
+print_r($cvss->scoresLabel);
+/*
+array (size=9)
+  'Impact SubScore Multiplier' => float 0.8064
+  'impact SubScore' => float 5.7576309677951
+  'Exploitabality Sub Score' => float 0.3924228
+  'Base Score' => float 6.7
+  'Temporal Score' => float 6.7
+  'Environmental Modified Exploitabality SubScore' => float 0.3924228
+  'Environmental Impact SubScore Multiplier' => float 0.8064
+  'Environmental Modified Impact SubScore' => float 5.7576309677951
+  'Environmental Score' => float 6.7
 */
 ```
 

@@ -43,23 +43,36 @@ class Cvss3Test extends PHPUnit_Framework_TestCase {
     }
 
 
+    public function testSubScoresArray()
+    {
+        $vector = "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N";
+        $cvss = new Cvss3;
+        $cvss->register($vector);
+
+        $this->assertArrayHasKey("impactSubScoreMultiplier", $cvss->sub_scores);
+        $this->assertArrayHasKey("impactSubScore", $cvss->sub_scores);
+        $this->assertArrayHasKey("exploitabalitySubScore", $cvss->sub_scores);
+        $this->assertArrayHasKey("baseScore", $cvss->sub_scores);
+        $this->assertArrayHasKey("temporalScore", $cvss->sub_scores);
+        $this->assertArrayHasKey("envModifiedExploitabalitySubScore", $cvss->sub_scores);
+        $this->assertArrayHasKey("envImpactSubScoreMultiplier", $cvss->sub_scores);
+        $this->assertArrayHasKey("envModifiedImpactSubScore", $cvss->sub_scores);
+        $this->assertArrayHasKey("envScore", $cvss->sub_scores);
+    }
     public function testScoresArray()
     {
         $vector = "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N";
         $cvss = new Cvss3;
         $cvss->register($vector);
 
-        $this->assertArrayHasKey("impactSubScoreMultiplier", $cvss->scores);
+        $this->assertArrayHasKey("baseScore", $cvss->scores);
         $this->assertArrayHasKey("impactSubScore", $cvss->scores);
         $this->assertArrayHasKey("exploitabalitySubScore", $cvss->scores);
-        $this->assertArrayHasKey("baseScore", $cvss->scores);
         $this->assertArrayHasKey("temporalScore", $cvss->scores);
-        $this->assertArrayHasKey("envModifiedExploitabalitySubScore", $cvss->scores);
-        $this->assertArrayHasKey("envImpactSubScoreMultiplier", $cvss->scores);
-        $this->assertArrayHasKey("envModifiedImpactSubScore", $cvss->scores);
         $this->assertArrayHasKey("envScore", $cvss->scores);
+        $this->assertArrayHasKey("envModifiedImpactSubScore", $cvss->scores);
+        $this->assertArrayHasKey("overallScore", $cvss->scores);
     }
-
     public function testFormulaArray()
     {
         $vector = "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N";

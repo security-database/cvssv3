@@ -13,13 +13,15 @@ define("CVSSV3_exploitabalitySubScore", "Exploitabality Sub Score");
 define("CVSSV3_impactSubScore", "impact SubScore");
 define("CVSSV3_impactSubScoreMultiplier", "Impact SubScore Multiplier");
 
+define('CVSSV3_overallScore','Overall CVSS Score');
+
 define("CVSSV3_baseMetricGroup_Legend","This metric group represents the intrinsic and fundamental characteristics of a vulnerability that are constant over time and user environments. Determine the affected authorization scope and score Attack Vector, Attack Complexity, Privileges Required and User Interaction relative to this component.");
 
 define("CVSSV3_AV", "Attack Vector");
 define("CVSSV3_AV_N", "Network");
-define("CVSSV3_AV_A", "Adjacent ");
+define("CVSSV3_AV_A", "Adjacent");
 define("CVSSV3_AV_L", "Local");
-define("CVSSV3_AV_P", "Physical ");
+define("CVSSV3_AV_P", "Physical");
 define("CVSSV3_AV_Heading","How far can the attacker be from the target system to exploit the vulnerability? The more remote an attacker, the greater the vulnerability score.");
 define("CVSSV3_AV_N_Label","A vulnerability exploitable with network access means the vulnerable authorization scope is bound to the network stack and the attacker's path to the vulnerable system is at the network layer. Such a vulnerability is often termed 'remotely exploitable'.");
 define("CVSSV3_AV_A_Label","A vulnerability exploitable with adjacent network access means the vulnerable authorization scope is bound to the network stack and the attacker's path to the vulnerable system is at the data link layer. Examples include local IP subnet, Bluetooth, IEEE 802.11, and local Ethernet segment.");
@@ -162,9 +164,10 @@ define("CVSSV3_AR_H_Label","Loss of availability is likely to have a catastrophi
 
 define("CVSSV3_MAV", "Modified Attack Vector");
 define("CVSSV3_MAV_N", "Network");
-define("CVSSV3_MAV_A", "Adjacent ");
+define("CVSSV3_MAV_A", "Adjacent");
 define("CVSSV3_MAV_L", "Local");
-define("CVSSV3_MAV_P", "Physical ");
+define("CVSSV3_MAV_P", "Physical");
+define("CVSSV3_MAV_X", "Not defined");
 define("CVSSV3_MAV_Heading","How far can the attacker be from the target system to exploit the vulnerability? The more remote an attacker, the greater the vulnerability score.");
 define("CVSSV3_MAV_X_Label","Use the value assigned to the corresponding Base Score metric.");
 define("CVSSV3_MAV_N_Label","A vulnerability exploitable with network access means the vulnerable authorization scope is bound to the network stack and the attacker's path to the vulnerable system is at the network layer. Such a vulnerability is often termed 'remotely exploitable'.");
@@ -175,6 +178,7 @@ define("CVSSV3_MAV_P_Label","A vulnerability exploitable with physical access re
 define("CVSSV3_MAC", "Modified Attack Complexity");
 define("CVSSV3_MAC_L", "Low");
 define("CVSSV3_MAC_H", "High");
+define("CVSSV3_MAC_X", "Not defined");
 define("CVSSV3_MAC_Heading","Are specialized access conditions or extenuating circumstances that are beyond the attacker's control required in order to place the system in a vulnerable state?");
 define("CVSSV3_MAC_X_Label","Use the value assigned to the corresponding Base Score metric.");
 define("CVSSV3_MAC_L_Label","Specialized access conditions or extenuating circumstances do not exist. An attacker can expect repeatable exploit success against a vulnerable target.");
@@ -184,6 +188,7 @@ define("CVSSV3_MPR", "Modified Privileges Required");
 define("CVSSV3_MPR_N", "None");
 define("CVSSV3_MPR_L", "Low");
 define("CVSSV3_MPR_H", "High");
+define("CVSSV3_MPR_X", "Not defined");
 define("CVSSV3_MPR_Heading","What privileges does an attacker require before successfully exploiting the vulnerability?");
 define("CVSSV3_MPR_X_Label","Use the value assigned to the corresponding Base Score metric.");
 define("CVSSV3_MPR_N_Label","The attacker is unprivileged or unauthenticated.");
@@ -193,6 +198,7 @@ define("CVSSV3_MPR_H_Label","The attacker is authenticated with privileges that 
 define("CVSSV3_MUI", "Modified User Interaction");
 define("CVSSV3_MUI_N", "None");
 define("CVSSV3_MUI_R", "Required");
+define("CVSSV3_MUI_X", "Not defined");
 define("CVSSV3_MUI_Heading","What human interaction (other than the attacker's) with the vulnerable system is required in order to exploit the vulnerability?");
 define("CVSSV3_MUI_X_Label","Use the value assigned to the corresponding Base Score metric.");
 define("CVSSV3_MUI_N_Label","The vulnerable system can be exploited without any interaction from any user.");
@@ -201,6 +207,7 @@ define("CVSSV3_MUI_R_Label","Successful exploitation of this vulnerability requi
 define("CVSSV3_MS", "Modified Scope");
 define("CVSSV3_MS_U", "Unchanged");
 define("CVSSV3_MS_C", "Changed");
+define("CVSSV3_MS_X", "Not defined");
 define("CVSSV3_MS_X_Label","Use the value assigned to the corresponding Base Score metric.");
 define("CVSSV3_MS_Heading","Does a successful attack allow the attack to move from one authorization authority to another? If so, Impact (Confidentiality, Integrity and Availability) should be scored relative to the changed authorization scope.");
 define("CVSSV3_MS_U_Label","The attacker attacks and impacts the environment that authorizes actions taken by the vulnerable authorization scope. Score Impact relative to the original authorization authority.");
@@ -210,6 +217,7 @@ define("CVSSV3_MC", "Modified Confidentiality Impact");
 define("CVSSV3_MC_H", "High");
 define("CVSSV3_MC_L", "Low");
 define("CVSSV3_MC_N", "None");
+define("CVSSV3_MC_X", "Not defined");
 define("CVSSV3_MC_Heading","What is the impact to confidentiality of a successfully exploited vulnerability? Confidentiality refers to limiting information access and disclosure to only authorized users, as well as preventing access by, or disclosure to, unauthorized ones. Increased confidentiality impact increases the vulnerability score.");
 define("CVSSV3_MC_X_Label","Use the value assigned to the corresponding Base Score metric.");
 define("CVSSV3_MC_N_Label","There is no impact to confidentiality within the affected scope.");
@@ -220,6 +228,7 @@ define("CVSSV3_MI", "Modified Integrity Impact");
 define("CVSSV3_MI_H", "High");
 define("CVSSV3_MI_L", "Low");
 define("CVSSV3_MI_N", "None");
+define("CVSSV3_MI_X", "Not defined");
 define("CVSSV3_MI_Heading","What is the impact to integrity of a successfully exploited vulnerability? Integrity refers to the trustworthiness and guaranteed veracity of information. Increased integrity impact increases the vulnerability score.");
 define("CVSSV3_MI_X_Label","Use the value assigned to the corresponding Base Score metric.");
 define("CVSSV3_MI_N_Label","There is no impact to integrity within the affected scope.");
@@ -230,6 +239,7 @@ define("CVSSV3_MA", "Modified Availability Impact");
 define("CVSSV3_MA_H", "High");
 define("CVSSV3_MA_L", "Low");
 define("CVSSV3_MA_N", "None");
+define("CVSSV3_MA_X", "Not defined");
 define("CVSSV3_MA_Heading","What is the impact to availability of a successfully exploited vulnerability? While the Confidentiality and Integrity impact metrics apply to the loss of confidentiality or integrity of data (e.g. information, files) used by a affected authorization scope, this metric refers to the loss of availability of the affected authorization scope, itself, such as networked service (e.g. web, database, email, etc). Since availability refers to the accessibility of information resources, attacks that consume network bandwidth, processor cycles, or disk space all impact the availability of an affected authorization scope. Increased availability impact increases the vulnerability score.");
 define("CVSSV3_MA_X_Label","Use the value assigned to the corresponding Base Score metric.");
 define("CVSSV3_MA_N_Label","There is no impact to availability within the affected scope.");
