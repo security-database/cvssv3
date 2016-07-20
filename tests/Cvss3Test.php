@@ -11,8 +11,37 @@ class Cvss3Test extends PHPUnit_Framework_TestCase {
         $cvss->register($vector);
 
         $this->assertTrue($cvss->vector == $vector);
-        $this->assertArrayHasKey("AV", $cvss->scores);
+        $this->assertArrayHasKey("AV", $cvss->weight);
     }
+
+    public function testWeightArray()
+    {
+        $vector = "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N";
+        $cvss = new Cvss3;
+        $cvss->register($vector);
+
+        $this->assertArrayHasKey("AV", $cvss->weight);
+        $this->assertArrayHasKey("AC", $cvss->weight);
+        $this->assertArrayHasKey("PR", $cvss->weight);
+        $this->assertArrayHasKey("UI", $cvss->weight);
+        $this->assertArrayHasKey("C", $cvss->weight);
+        $this->assertArrayHasKey("I", $cvss->weight);
+        $this->assertArrayHasKey("A", $cvss->weight);
+        $this->assertArrayHasKey("E", $cvss->weight);
+        $this->assertArrayHasKey("RL", $cvss->weight);
+        $this->assertArrayHasKey("CR", $cvss->weight);
+        $this->assertArrayHasKey("IR", $cvss->weight);
+        $this->assertArrayHasKey("MAV", $cvss->weight);
+        $this->assertArrayHasKey("MAC", $cvss->weight);
+        $this->assertArrayHasKey("MPR", $cvss->weight);
+        $this->assertArrayHasKey("MUI", $cvss->weight);
+        $this->assertArrayHasKey("MC", $cvss->weight);
+        $this->assertArrayHasKey("MI", $cvss->weight);
+        $this->assertArrayHasKey("MA", $cvss->weight);
+        $this->assertArrayHasKey("RC", $cvss->weight);
+        $this->assertArrayHasKey("AR", $cvss->weight);
+    }
+
 
     public function testScoresArray()
     {
@@ -20,44 +49,15 @@ class Cvss3Test extends PHPUnit_Framework_TestCase {
         $cvss = new Cvss3;
         $cvss->register($vector);
 
-        $this->assertArrayHasKey("AV", $cvss->scores);
-        $this->assertArrayHasKey("AC", $cvss->scores);
-        $this->assertArrayHasKey("PR", $cvss->scores);
-        $this->assertArrayHasKey("UI", $cvss->scores);
-        $this->assertArrayHasKey("C", $cvss->scores);
-        $this->assertArrayHasKey("I", $cvss->scores);
-        $this->assertArrayHasKey("A", $cvss->scores);
-        $this->assertArrayHasKey("E", $cvss->scores);
-        $this->assertArrayHasKey("RL", $cvss->scores);
-        $this->assertArrayHasKey("CR", $cvss->scores);
-        $this->assertArrayHasKey("IR", $cvss->scores);
-        $this->assertArrayHasKey("MAV", $cvss->scores);
-        $this->assertArrayHasKey("MAC", $cvss->scores);
-        $this->assertArrayHasKey("MPR", $cvss->scores);
-        $this->assertArrayHasKey("MUI", $cvss->scores);
-        $this->assertArrayHasKey("MC", $cvss->scores);
-        $this->assertArrayHasKey("MI", $cvss->scores);
-        $this->assertArrayHasKey("MA", $cvss->scores);
-        $this->assertArrayHasKey("RC", $cvss->scores);
-        $this->assertArrayHasKey("AR", $cvss->scores);
-    }
-    
-
-    public function testCalculArray()
-    {
-        $vector = "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N";
-        $cvss = new Cvss3;
-        $cvss->register($vector);
-
-        $this->assertArrayHasKey("ISCbase", $cvss->calcul);
-        $this->assertArrayHasKey("ISC", $cvss->calcul);
-        $this->assertArrayHasKey("ESC", $cvss->calcul);
-        $this->assertArrayHasKey("BS", $cvss->calcul);
-        $this->assertArrayHasKey("TS", $cvss->calcul);
-        $this->assertArrayHasKey("MESC", $cvss->calcul);
-        $this->assertArrayHasKey("ISCmodified", $cvss->calcul);
-        $this->assertArrayHasKey("MISS", $cvss->calcul);
-        $this->assertArrayHasKey("ES", $cvss->calcul);
+        $this->assertArrayHasKey("impactSubScoreMultiplier", $cvss->scores);
+        $this->assertArrayHasKey("impactSubScore", $cvss->scores);
+        $this->assertArrayHasKey("exploitabalitySubScore", $cvss->scores);
+        $this->assertArrayHasKey("baseScore", $cvss->scores);
+        $this->assertArrayHasKey("temporalScore", $cvss->scores);
+        $this->assertArrayHasKey("envModifiedExploitabalitySubScore", $cvss->scores);
+        $this->assertArrayHasKey("envImpactSubScoreMultiplier", $cvss->scores);
+        $this->assertArrayHasKey("envModifiedImpactSubScore", $cvss->scores);
+        $this->assertArrayHasKey("envScore", $cvss->scores);
     }
 
     public function testFormulaArray()
@@ -66,15 +66,15 @@ class Cvss3Test extends PHPUnit_Framework_TestCase {
         $cvss = new Cvss3;
         $cvss->register($vector);
 
-        $this->assertArrayHasKey("ISCbase", $cvss->formula);
-        $this->assertArrayHasKey("ISC", $cvss->formula);
-        $this->assertArrayHasKey("ESC", $cvss->formula);
-        $this->assertArrayHasKey("BS", $cvss->formula);
-        $this->assertArrayHasKey("TS", $cvss->formula);
-        $this->assertArrayHasKey("MESC", $cvss->formula);
-        $this->assertArrayHasKey("ISCmodified", $cvss->formula);
-        $this->assertArrayHasKey("MISS", $cvss->formula);
-        $this->assertArrayHasKey("ES", $cvss->formula);
+        $this->assertArrayHasKey("impactSubScoreMultiplier", $cvss->formula);
+        $this->assertArrayHasKey("impactSubScore", $cvss->formula);
+        $this->assertArrayHasKey("exploitabalitySubScore", $cvss->formula);
+        $this->assertArrayHasKey("baseScore", $cvss->formula);
+        $this->assertArrayHasKey("temporalScore", $cvss->formula);
+        $this->assertArrayHasKey("envModifiedExploitabalitySubScore", $cvss->formula);
+        $this->assertArrayHasKey("envImpactSubScoreMultiplier", $cvss->formula);
+        $this->assertArrayHasKey("envModifiedImpactSubScore", $cvss->formula);
+        $this->assertArrayHasKey("envScore", $cvss->formula);
     }
 
     /**
