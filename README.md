@@ -8,6 +8,9 @@
 [![License](https://poser.pugx.org/security-database/cvss/license)](https://packagist.org/packages/security-database/cvss)
 
 ###Version
+####1.3.2
+- put a constructor that load language files
+
 ####1.3.1
 - Fix envImpactSubScoreMultiplier
 - Add Scores priority

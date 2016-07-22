@@ -19,7 +19,7 @@
  * @desc Class to get and calculate CVSS v3 scores
  * @author Security-Database <info@security-database.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- * @version 1.3.1
+ * @version 1.3.2
  * @package CVSSv3
  */
 
@@ -237,6 +237,22 @@ class Cvss3
             "H" => 0.56
         )
     );
+
+    /**
+     * Cvss3 constructor.
+     */
+    public function __construct()
+    {
+        if (!isset($this->lang)) {
+            throw new Exception('Not a valid language');
+        }
+
+        if (is_file(__dir__."/Cvss3.".$this->lang.".php") == false) {
+            throw new Exception('Traduction file does not exist');
+        } else {
+            include_once(__dir__."/Cvss3.".$this->lang.".php");
+        }
+    }
 
     /**
      * @param string $vector
@@ -540,16 +556,6 @@ class Cvss3
      * @throws Exception
      */
     private function buildLanguage() {
-        if (!isset($this->lang)) {
-            throw new Exception('Not a valid language');
-        }
-
-        if (is_file(__dir__."/Cvss3.".$this->lang.".php") == false) {
-            throw new Exception('Traduction file does not exist');
-        } else {
-            include_once(__dir__."/Cvss3.".$this->lang.".php");
-        }
-
         foreach ( $this->scores as $key => $value) {
             $this->scoresLabel[constant("CVSSV3_".$key)] = $value;
         }
