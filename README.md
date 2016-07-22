@@ -8,6 +8,10 @@
 [![License](https://poser.pugx.org/security-database/cvss/license)](https://packagist.org/packages/security-database/cvss)
 
 ###Version
+####1.3.1
+- Fix envImpactSubScoreMultiplier
+- Add Scores priority
+
 ####1.3.0
 - Fix - Errors on calculation, specific on Modified Scope
 - Fix - Modified scores -> weight (float)
