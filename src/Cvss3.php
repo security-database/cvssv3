@@ -244,11 +244,11 @@ class Cvss3
     public function __construct()
     {
         if (!isset($this->lang)) {
-            throw new Exception('Not a valid language');
+            throw new Exception('Not a valid language', __LINE__);
         }
 
         if (is_file(__dir__."/Cvss3.".$this->lang.".php") == false) {
-            throw new Exception('Traduction file does not exist');
+            throw new Exception('Traduction file does not exist', __LINE__);
         } else {
             include_once(__dir__."/Cvss3.".$this->lang.".php");
         }
@@ -261,7 +261,7 @@ class Cvss3
     public function register($vector)
     {
         if (strlen($vector) == 0) {
-            throw new Exception("ERROR: Vector is not defined");
+            throw new Exception("ERROR: Vector is not defined", __LINE__);
         }
         self::explodeVector($vector);
         self::checkInput();
@@ -281,7 +281,7 @@ class Cvss3
     private function explodeVector($vector)
     {
         if (preg_match('/^CVSS:3.0.*/mi', $vector) == false) {
-            throw new Exception("ERROR: Vector is not valid");
+            throw new Exception("ERROR: Vector is not valid", __LINE__);
         }
         $vector = str_replace("CVSS:3.0/", "", $vector);
         $vector_input_array_temp = explode('/', $vector);

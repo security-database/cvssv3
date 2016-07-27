@@ -9,6 +9,7 @@
 
 ###Version
 ####1.3.2
+- Add Code on some Exception (__construct && register && explodeVector)
 - Change constructVector() to construct only mandatory vector (optional and modified are not put on vector if value is 'X' == No set)
 - Fix check constant on language
 - Fix modified metrics defaulting
