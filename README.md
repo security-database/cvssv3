@@ -9,6 +9,8 @@
 
 ###Version
 ####1.3.2
+- Change private to public some vars ($this->base, $this->env, $this->tmp)
+- Fix \Exception()
 - Add Code on some Exception (__construct && register && explodeVector)
 - Change constructVector() to construct only mandatory vector (optional and modified are not put on vector if value is 'X' == No set)
 - Fix check constant on language
