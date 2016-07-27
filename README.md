@@ -9,8 +9,10 @@
 
 ###Version
 ####1.3.2
+- Fix check constant on language
 - Fix modified metrics defaulting
 - Add a constructor that load language files
+- Add a reverse vector checker
 
 ####1.3.1
 - Fix envImpactSubScoreMultiplier

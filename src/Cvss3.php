@@ -264,6 +264,7 @@ class Cvss3
             throw new Exception("ERROR: Vector is not defined");
         }
         self::explodeVector($vector);
+        self::checkInput();
         self::checkMandatory();
         self::checkOptional();
         self::checkModified();
@@ -335,6 +336,32 @@ class Cvss3
             }
         }
     }
+
+    /**
+     * @throws Exception
+     */
+    private function checkInput()
+    {
+        foreach ($this->vector_input_array as $key => $value) {
+            if (isset($this->metrics_check_mandatory[$key])) {
+                if (!preg_match("|" . $value . "|", $this->metrics_check_mandatory[$key])) {
+                    throw new Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
+                }
+            } else if (isset($this->metrics_check_optional[$key])) {
+                if (!preg_match("|" . $value . "|", $this->metrics_check_optional[$key])) {
+                    throw new Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
+                }
+            } else if (isset($this->metrics_check_modified[$key])) {
+                if (!preg_match("|" . $value . "|", $this->metrics_check_modified[$key])) {
+                    throw new Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
+                }
+            } else {
+                throw new Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
+            }
+        }
+    }
+
+
 
     /**
      * @throws Exception
@@ -562,14 +589,27 @@ class Cvss3
      * @throws Exception
      */
     private function buildLanguage() {
+
         foreach ( $this->scores as $key => $value) {
-            $this->scoresLabel[constant("CVSSV3_".$key)] = $value;
+            if (defined("CVSSV3_" . $key)) {
+                $this->scoresLabel[constant("CVSSV3_" . $key)] = $value;
+            } else {
+                throw new Exception('Error in Cvss v3 vector definition', __LINE__);
+            }
         }
         foreach ( $this->sub_scores as $key => $value) {
-            $this->sub_scoresLabel[constant("CVSSV3_".$key)] = $value;
+            if (defined("CVSSV3_" . $key)) {
+                $this->sub_scoresLabel[constant("CVSSV3_" . $key)] = $value;
+            } else {
+                throw new Exception('Error in Cvss v3 vector definition', __LINE__);
+            }
         }
         foreach ( $this->vector_input_array as $key => $value) {
-            $this->vector_inputLabel_array[constant("CVSSV3_".$key)] = constant("CVSSV3_".$key."_".$value);
+            if (defined("CVSSV3_" . $key."_".$value) && constant("CVSSV3_" . $key . "_" . $value)) {
+                $this->vector_inputLabel_array[constant("CVSSV3_" . $key)] = constant("CVSSV3_" . $key . "_" . $value);
+            } else {
+                throw new Exception('Error in Cvss v3 vector definition', __LINE__);
+            }
         }
     }
     /**
