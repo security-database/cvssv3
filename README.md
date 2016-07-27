@@ -9,6 +9,9 @@
 
 ###Version
 ####1.3.2
+- Add a Clean() function to be able to clean Object before register another one
+- Add public vector_part (Base, Temp and Env vector part)
+- Modify private to public base, env and tmp
 - Change private to public some vars ($this->base, $this->env, $this->tmp)
 - Fix \Exception()
 - Add Code on some Exception (__construct && register && explodeVector)

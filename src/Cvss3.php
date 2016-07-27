@@ -49,6 +49,7 @@ class Cvss3
 {
     const VERSION = '3.0';
 
+    public $vector_head = "CVSS:3.0";
     public $lang = "en_US";
     public $weight = array();
     public $sub_scores = array();
@@ -63,13 +64,17 @@ class Cvss3
                     );
     public $scoresLabel = array();
     public $formula = array();
+
     public $vector = "";
+
+    public $vector_part = array('base' => '', 'tmp' => '', 'env' => '');
 
     public $vector_input_array = array();
     public $vector_inputLabel_array = array();
 
-    private $env = array ('MAV', 'MAC', 'MPR', 'MUI', 'MS', 'MC', 'MI', 'MA', 'CR', 'IR', 'AR');
-    private $tmp = array ('E', 'RL', 'RC');
+    public $base = array ('AV', 'AC', 'PR', 'UI', 'S', 'C', 'I', 'A');
+    public $tmp = array ('E', 'RL', 'RC');
+    public $env = array ('CR', 'IR', 'AR', 'MAV', 'MAC', 'MPR', 'MUI', 'MS', 'MC', 'MI', 'MA');
 
     private $metrics_check_mandatory = array(
         "AV" => "[N,A,L,P]",
@@ -262,6 +267,9 @@ class Cvss3
         if (strlen($vector) == 0) {
             throw new \Exception("ERROR: Vector is not defined", __LINE__);
         }
+
+        self::clean();
+
         self::explodeVector($vector);
         self::checkInput();
         self::checkMandatory();
@@ -610,7 +618,7 @@ class Cvss3
      */
     private function constructVector()
     {
-        $this->vector = "CVSS:3.0";
+        $this->vector = $this->vector_head;
 
         foreach ($this->vector_input_array as $vec => $input) {
             if (isset($this->metrics_check_mandatory[$vec])) {
@@ -621,8 +629,36 @@ class Cvss3
                 $this->vector .= "/" . $vec . ":" . $input;
             }
         }
+
+        foreach ($this->base as $vec => $value) {
+            if (isset($this->vector_input_array[$value]))
+                $this->vector_part['base'] .= "/" . $value . ":" . $this->vector_input_array[$value];
+        }
+        foreach ($this->tmp as $vec => $value) {
+            if (isset($this->vector_input_array[$value]) && $this->vector_input_array[$value] != 'X')
+                $this->vector_part['tmp'] .= "/" . $value . ":" . $this->vector_input_array[$value];
+        }
+        foreach ($this->env as $vec => $value) {
+            if (isset($this->vector_input_array[$value]) && $this->vector_input_array[$value] != 'X')
+                $this->vector_part['env'] .= "/" . $value . ":" . $this->vector_input_array[$value];
+        }
+
+        foreach ($this->vector_part as $k => $v) {
+            $this->vector_part[$k] = substr($v, 1);
+        }
     }
 
+    /**
+     *
+     */
+    private function clean() {
+        $blankInstance = new static;
+        $reflBlankInstance = new \ReflectionClass($blankInstance);
+        foreach ($reflBlankInstance->getProperties() as $prop) {
+            $prop->setAccessible(true);
+            $this->{$prop->name} = $prop->getValue($blankInstance);
+        }
+    }
     /**
      * @param float $number number to round
      * @param number $precision precision for round
