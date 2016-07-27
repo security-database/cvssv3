@@ -618,8 +618,15 @@ class Cvss3
     private function constructVector()
     {
         $this->vector = "CVSS:3.0";
+
         foreach ($this->vector_input_array as $vec => $input) {
-            $this->vector .= "/" . $vec . ":" . $input;
+            if (isset($this->metrics_check_mandatory[$vec])) {
+                $this->vector .= "/" . $vec . ":" . $input;
+            } else if (isset($this->metrics_check_optional[$vec]) && $input != 'X' ) {
+                $this->vector .= "/" . $vec . ":" . $input;
+            } else if (isset($this->metrics_check_modified[$vec]) && $input != 'X' ) {
+                $this->vector .= "/" . $vec . ":" . $input;
+            }
         }
     }
 

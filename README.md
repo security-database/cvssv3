@@ -9,6 +9,7 @@
 
 ###Version
 ####1.3.2
+- Change constructVector() to construct only mandatory vector (optional and modified are not put on vector if value is 'X' == No set)
 - Fix check constant on language
 - Fix modified metrics defaulting
 - Add a constructor that load language files
