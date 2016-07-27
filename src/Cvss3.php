@@ -383,14 +383,20 @@ class Cvss3
                     if (isset($this->metrics_level_modified[$metric][$value])) {
                         $this->weight[$metric] = (float)$this->metrics_level_modified[$metric][$value]["Default"];
                     }
-                } else {
+                } elseif ($value != 'X') {
                     if (isset($this->metrics_level_modified[$metric][$value])) {
                         $this->weight[$metric] = (float)$this->metrics_level_modified[$metric][$value];
                     }
+                } else {
+                    $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
                 }
             } else {
                 if (isset($this->metrics_level_modified[$metric][$value])) {
-                    $this->weight[$metric] = (float)$this->metrics_level_modified[$metric][$value];
+                    if($value != 'X') {
+                        $this->weight[$metric] = (float)$this->metrics_level_modified[$metric][$value];
+                    } else {
+                        $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
+                    }
                 }
             }
         }

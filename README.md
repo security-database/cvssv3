@@ -9,7 +9,8 @@
 
 ###Version
 ####1.3.2
-- put a constructor that load language files
+- Fix modified metrics defaulting
+- Add a constructor that load language files
 
 ####1.3.1
 - Fix envImpactSubScoreMultiplier
