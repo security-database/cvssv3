@@ -243,7 +243,7 @@ class Cvss3
 
     /**
      * Cvss3 constructor.
-     * @throws Exception
+     * @throws \Exception
      */
     public function __construct()
     {
@@ -260,7 +260,7 @@ class Cvss3
 
     /**
      * @param string $vector
-     * @throws Exception
+     * @throws \Exception
      */
     public function register($vector)
     {
@@ -283,7 +283,7 @@ class Cvss3
 
     /**
      * @param string $vector
-     * @throws Exception
+     * @throws \Exception
      */
     private function explodeVector($vector)
     {
@@ -301,7 +301,7 @@ class Cvss3
 
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function checkMandatory()
     {
@@ -317,7 +317,7 @@ class Cvss3
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function checkOptional()
     {
@@ -331,7 +331,7 @@ class Cvss3
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function checkModified()
     {
@@ -345,7 +345,7 @@ class Cvss3
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function checkInput()
     {
@@ -371,7 +371,7 @@ class Cvss3
 
 
     /**
-     * @throws Exception
+     * @throws \Exception
      *
      */
     private function constructWeights()
@@ -456,7 +456,7 @@ class Cvss3
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function calculate()
     {
@@ -587,7 +587,7 @@ class Cvss3
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function buildLanguage() {
 

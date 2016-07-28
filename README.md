@@ -9,6 +9,7 @@
 
 ###Version
 ####1.3.2
+- Modify docblock with \Exception
 - Add a Clean() function to be able to clean Object before register another one
 - Add public vector_part (Base, Temp and Env vector part)
 - Modify private to public base, env and tmp
