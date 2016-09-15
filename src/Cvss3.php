@@ -55,13 +55,13 @@ class Cvss3
     public $sub_scores = array();
     public $sub_scoresLabel = array();
     public $scores = array("baseScore" => "NA",
-                            "impactSubScore" => "NA",
-                            "exploitabalitySubScore" => "NA",
-                            "temporalScore" => "NA",
-                            "envScore" => "NA",
-                            "envModifiedImpactSubScore" => "NA",
-                            "overallScore" => "NA"
-                    );
+                           "impactSubScore" => "NA",
+                           "exploitabalitySubScore" => "NA",
+                           "temporalScore" => "NA",
+                           "envScore" => "NA",
+                           "envModifiedImpactSubScore" => "NA",
+                           "overallScore" => "NA"
+    );
     public $scoresLabel = array();
     public $formula = array();
 
@@ -251,10 +251,10 @@ class Cvss3
             throw new \Exception('Not a valid language', __LINE__);
         }
 
-        if (is_file(__dir__."/Cvss3.".$this->lang.".php") == false) {
+        if (is_file(__DIR__ . '/Cvss3.' . $this->lang . '.php') == false) {
             throw new \Exception('Traduction file does not exist', __LINE__);
         } else {
-            include_once(__dir__."/Cvss3.".$this->lang.".php");
+            include_once(__DIR__ . '/Cvss3.' . $this->lang . '.php');
         }
     }
 
@@ -354,11 +354,11 @@ class Cvss3
                 if (!preg_match("|" . $value . "|", $this->metrics_check_mandatory[$key])) {
                     throw new \Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
                 }
-            } else if (isset($this->metrics_check_optional[$key])) {
+            } elseif (isset($this->metrics_check_optional[$key])) {
                 if (!preg_match("|" . $value . "|", $this->metrics_check_optional[$key])) {
                     throw new \Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
                 }
-            } else if (isset($this->metrics_check_modified[$key])) {
+            } elseif (isset($this->metrics_check_modified[$key])) {
                 if (!preg_match("|" . $value . "|", $this->metrics_check_modified[$key])) {
                     throw new \Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
                 }
@@ -426,7 +426,7 @@ class Cvss3
                 }
             } else {
                 if (isset($this->metrics_level_modified[$metric][$value])) {
-                    if($value != 'X') {
+                    if ($value != 'X') {
                         $this->weight[$metric] = (float)$this->metrics_level_modified[$metric][$value];
                     } else {
                         $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
@@ -470,8 +470,15 @@ class Cvss3
          * Impact Sub base score
          */
 
-        $this->sub_scores["impactSubScoreMultiplier"] = 1 - ((1 - $this->weight["C"]) * (1 - $this->weight["I"]) * (1 - $this->weight["A"]));
-        $this->formula["impactSubScoreMultiplier"] = "1 - ( ( 1 - " . $this->weight["C"] . " ) * ( 1 - " . $this->weight["I"] . " ) * ( 1 - " . $this->weight["A"] . " ) )";
+        $this->sub_scores["impactSubScoreMultiplier"] =
+            1 - (
+                (1 - $this->weight["C"])
+                * (1 - $this->weight["I"])
+                * (1 - $this->weight["A"])
+            );
+
+        $this->formula["impactSubScoreMultiplier"] = "1 - ( ( 1 - " . $this->weight["C"] . " ) * ( 1 - "
+            . $this->weight["I"] . " ) * ( 1 - " . $this->weight["A"] . " ) )";
 
         /**
          * Impact Sub Score
@@ -479,10 +486,16 @@ class Cvss3
 
         if ($this->vector_input_array["S"] == 'U') {
             $this->sub_scores["impactSubScore"] = 6.42 * $this->sub_scores["impactSubScoreMultiplier"];
+
             $this->formula["impactSubScore"] = "6.42 * " . $this->sub_scores["impactSubScoreMultiplier"];
         } elseif ($this->vector_input_array["S"] == 'C') {
-            $this->sub_scores["impactSubScore"] = 7.52 * ($this->sub_scores["impactSubScoreMultiplier"] - 0.029) - 3.25 * pow(($this->sub_scores["impactSubScoreMultiplier"] - 0.02), 15);
-            $this->formula["impactSubScore"] = "7.52 * ( " . $this->sub_scores["impactSubScoreMultiplier"] . " - 0.029 ) - 3.25 * pow(( " . $this->sub_scores["impactSubScoreMultiplier"] . " - 0.02 ),15)";
+            $this->sub_scores["impactSubScore"] =
+                7.52
+                * ($this->sub_scores["impactSubScoreMultiplier"] - 0.029) - 3.25
+                * pow(($this->sub_scores["impactSubScoreMultiplier"] - 0.02), 15);
+
+            $this->formula["impactSubScore"] = "7.52 * ( " . $this->sub_scores["impactSubScoreMultiplier"]
+                . " - 0.029 ) - 3.25 * pow(( " . $this->sub_scores["impactSubScoreMultiplier"] . " - 0.02 ),15)";
         } else {
             throw new \Exception("ERROR: on Scope", __LINE__);
         }
@@ -491,8 +504,15 @@ class Cvss3
          * Exploitability Sub score
          */
 
-        $this->sub_scores["exploitabalitySubScore"] = 8.22 * $this->weight["AV"] * $this->weight["AC"] * $this->weight["PR"] * $this->weight["UI"];
-        $this->formula["exploitabalitySubScore"] = "8.22 * " . $this->weight["AV"] . " * " . $this->weight["AC"] . " * " . $this->weight["PR"] . " * " . $this->weight["UI"];
+        $this->sub_scores["exploitabalitySubScore"] =
+            8.22
+            * $this->weight["AV"]
+            * $this->weight["AC"]
+            * $this->weight["PR"]
+            * $this->weight["UI"];
+
+        $this->formula["exploitabalitySubScore"] = "8.22 * " . $this->weight["AV"] . " * " . $this->weight["AC"]
+            . " * " . $this->weight["PR"] . " * " . $this->weight["UI"];
 
         /**
          * Base Score
@@ -500,13 +520,24 @@ class Cvss3
 
         if ($this->sub_scores["impactSubScore"] <= 0) {
             $this->sub_scores["baseScore"] = 0;
+
             $this->formula["baseScore"] = "0";
         } elseif ($this->sub_scores["impactSubScore"] > 0 && $this->vector_input_array["S"] == 'U') {
-            $this->sub_scores["baseScore"] = self::roundUp(min( 10, $this->sub_scores["impactSubScore"] + $this->sub_scores["exploitabalitySubScore"]), 1);
-            $this->formula["baseScore"] = "roundUp( min( 10 , " . $this->sub_scores["impactSubScore"] . " + " . $this->sub_scores["exploitabalitySubScore"] . " ) )";
+            $this->sub_scores["baseScore"] = self::roundUp(
+                min(10, $this->sub_scores["impactSubScore"] + $this->sub_scores["exploitabalitySubScore"]),
+                1
+            );
+
+            $this->formula["baseScore"] = "roundUp( min( 10 , " . $this->sub_scores["impactSubScore"] . " + "
+                . $this->sub_scores["exploitabalitySubScore"] . " ) )";
         } elseif ($this->sub_scores["impactSubScore"] > 0 && $this->vector_input_array["S"] == 'C') {
-            $this->sub_scores["baseScore"] = self::roundUp( min( 10, 1.08 * ($this->sub_scores["impactSubScore"] + $this->sub_scores["exploitabalitySubScore"]) ), 1 );
-            $this->formula["baseScore"] = "roundUp( min( 10 , 1.08 * ( " . $this->sub_scores["impactSubScore"] . " + " . $this->sub_scores["exploitabalitySubScore"] . " ) ) )";
+            $this->sub_scores["baseScore"] = self::roundUp(
+                min(10, 1.08 * ($this->sub_scores["impactSubScore"] + $this->sub_scores["exploitabalitySubScore"])),
+                1
+            );
+
+            $this->formula["baseScore"] = "roundUp( min( 10 , 1.08 * ( " . $this->sub_scores["impactSubScore"]
+                . " + " . $this->sub_scores["exploitabalitySubScore"] . " ) ) )";
         } else {
             throw new \Exception("ERROR: on Base Score calcul", __LINE__);
         }
@@ -515,34 +546,73 @@ class Cvss3
          * Temporal score
          */
 
-        $this->sub_scores["temporalScore"] = self::roundUp($this->sub_scores["baseScore"] * $this->weight["E"] * $this->weight["RL"] * $this->weight["RC"], 1);
-        $this->formula["temporalScore"] = "roundUp( " . $this->sub_scores["baseScore"] . " * " . $this->weight["E"] . " * " . $this->weight["RL"] . " * " . $this->weight["RC"] . ")";
+        $this->sub_scores["temporalScore"] = self::roundUp(
+            $this->sub_scores["baseScore"] * $this->weight["E"] * $this->weight["RL"] * $this->weight["RC"],
+            1
+        );
+
+        $this->formula["temporalScore"] = "roundUp( " . $this->sub_scores["baseScore"] . " * " . $this->weight["E"]
+            . " * " . $this->weight["RL"] . " * " . $this->weight["RC"] . ")";
 
         /**
          * Environmental score
          */
 
 
-        $this->sub_scores["envImpactSubScoreMultiplier"] = min(1 - ( (1 - $this->weight["MC"] * $this->weight["CR"]) * (1 - $this->weight["MI"] * $this->weight["IR"]) * (1 - $this->weight["MA"] * $this->weight["AR"])), 0.915);
-        $this->formula["envImpactSubScoreMultiplier"] = "min(1 - ( (1 - ".$this->weight["MC"]." * ".$this->weight["CR"].") * (1 - ".$this->weight["MI"]." * ".$this->weight["IR"].") * (1 - ".$this->weight["MA"]." * ".$this->weight["AR"].")), 0.915)";
+        $this->sub_scores["envImpactSubScoreMultiplier"] = min(
+            1 - (
+                (1 - $this->weight["MC"] * $this->weight["CR"])
+                * (1 - $this->weight["MI"] * $this->weight["IR"])
+                * (1 - $this->weight["MA"] * $this->weight["AR"])
+            ),
+            0.915
+        );
+
+        $this->formula["envImpactSubScoreMultiplier"] = "min(1 - "
+            . "( (1 - " . $this->weight["MC"] . " * " . $this->weight["CR"] . ") * (1 - "
+            . $this->weight["MI"] . " * " . $this->weight["IR"] . ") * (1 - " . $this->weight["MA"]
+            . " * " . $this->weight["AR"] . ")), 0.915)";
 
         /**
          * Modified Exploitability Sub score
          */
 
-        $this->sub_scores["envModifiedExploitabalitySubScore"] = 8.22 * $this->weight["MAV"] * $this->weight["MAC"] * $this->weight["MPR"] * $this->weight["MUI"];
-        $this->formula["envModifiedExploitabalitySubScore"] = "8.22 * " . $this->weight["MAV"] . " * " . $this->weight["MAC"] . " * " . $this->weight["MPR"] . " * " . $this->weight["MUI"];
+        $this->sub_scores["envModifiedExploitabalitySubScore"] =
+            8.22
+            * $this->weight["MAV"]
+            * $this->weight["MAC"]
+            * $this->weight["MPR"]
+            * $this->weight["MUI"];
+
+        $this->formula["envModifiedExploitabalitySubScore"] =
+            "8.22 * "
+            . $this->weight["MAV"]
+            . " * " . $this->weight["MAC"]
+            . " * " . $this->weight["MPR"]
+            . " * " . $this->weight["MUI"];
 
         /**
          * Modified Impact Sub score
          */
 
-        if (isset($this->vector_input_array["MS"]) == false || ( $this->vector_input_array["MS"] == 'U' || ($this->vector_input_array["MS"] == 'X' && $this->vector_input_array["S"] == 'U')) ) {
+        if (isset($this->vector_input_array["MS"]) == false
+            || ( $this->vector_input_array["MS"] == 'U'
+                || ($this->vector_input_array["MS"] == 'X'
+                    && $this->vector_input_array["S"] == 'U')
+            )
+        ) {
             $this->sub_scores["envModifiedImpactSubScore"] = 6.42 * $this->sub_scores["envImpactSubScoreMultiplier"];
+
             $this->formula["envModifiedImpactSubScore"] = "6.42 * " . $this->sub_scores["envImpactSubScoreMultiplier"];
         } else {
-            $this->sub_scores["envModifiedImpactSubScore"] = 7.52 * ($this->sub_scores["envImpactSubScoreMultiplier"] - 0.029) - 3.25 * pow(($this->sub_scores["envImpactSubScoreMultiplier"] - 0.02), 15);
-            $this->formula["envModifiedImpactSubScore"] = "7.52 * ( " . $this->sub_scores["envImpactSubScoreMultiplier"] . " - 0.029 ) - 3.25 * pow(( " . $this->sub_scores["envImpactSubScoreMultiplier"] . " - 0.02 ),15)";
+            $this->sub_scores["envModifiedImpactSubScore"] =
+                7.52
+                * ($this->sub_scores["envImpactSubScoreMultiplier"] - 0.029) - 3.25
+                * pow(($this->sub_scores["envImpactSubScoreMultiplier"] - 0.02), 15);
+
+            $this->formula["envModifiedImpactSubScore"] = "7.52 * ( "
+                . $this->sub_scores["envImpactSubScoreMultiplier"] . " - 0.029 ) - 3.25 * pow(( "
+                . $this->sub_scores["envImpactSubScoreMultiplier"] . " - 0.02 ),15)";
         }
 
         /**
@@ -550,12 +620,46 @@ class Cvss3
          */
 
 
-        if (isset($this->vector_input_array["MS"]) == false || ( $this->vector_input_array["MS"] == 'U' || ($this->vector_input_array["MS"] == 'X' && $this->vector_input_array["S"] == 'U'))) {
-            $this->sub_scores["envScore"] = self::roundUp(min(10, ($this->sub_scores["envModifiedImpactSubScore"] + $this->sub_scores["envModifiedExploitabalitySubScore"]) * $this->weight["E"] * $this->weight["RL"] * $this->weight["RC"]), 1);
-            $this->formula["envScore"] = "roundUp(min(10 , (" . $this->sub_scores["envModifiedImpactSubScore"] . " + " . $this->sub_scores["envModifiedExploitabalitySubScore"] . " ) * " . $this->weight["E"] . " * " . $this->weight["RL"] . " * " . $this->weight["RC"] . "),1)";
+        if (isset($this->vector_input_array["MS"]) == false
+            || ( $this->vector_input_array["MS"] == 'U'
+                || ($this->vector_input_array["MS"] == 'X'
+                    && $this->vector_input_array["S"] == 'U')
+            )
+        ) {
+            $this->sub_scores["envScore"] = self::roundUp(
+                min(
+                    10,
+                    ($this->sub_scores["envModifiedImpactSubScore"]
+                        + $this->sub_scores["envModifiedExploitabalitySubScore"]
+                    )
+                    * $this->weight["E"]
+                    * $this->weight["RL"]
+                    * $this->weight["RC"]
+                ),
+                1
+            );
+
+            $this->formula["envScore"] = "roundUp(min(10 , (" . $this->sub_scores["envModifiedImpactSubScore"]
+                . " + " . $this->sub_scores["envModifiedExploitabalitySubScore"] . " ) * " . $this->weight["E"]
+                . " * " . $this->weight["RL"] . " * " . $this->weight["RC"] . "),1)";
         } else {
-            $this->sub_scores["envScore"] = self::roundUp(min(10, 1.08 * ($this->sub_scores["envModifiedImpactSubScore"] + $this->sub_scores["envModifiedExploitabalitySubScore"]) * $this->weight["E"] * $this->weight["RL"] * $this->weight["RC"]), 1);
-            $this->formula["envScore"] = "roundUp(min(10 , 1.08 * (" . $this->sub_scores["envModifiedImpactSubScore"] . " + " . $this->sub_scores["envModifiedExploitabalitySubScore"] . " ) * " . $this->weight["E"] . " * " . $this->weight["RL"] . " * " . $this->weight["RC"] . "),1)";
+            $this->sub_scores["envScore"] = self::roundUp(
+                min(
+                    10,
+                    1.08
+                    * ($this->sub_scores["envModifiedImpactSubScore"]
+                        + $this->sub_scores["envModifiedExploitabalitySubScore"]
+                    )
+                    * $this->weight["E"]
+                    * $this->weight["RL"]
+                    * $this->weight["RC"]
+                ),
+                1
+            );
+
+            $this->formula["envScore"] = "roundUp(min(10 , 1.08 * (" . $this->sub_scores["envModifiedImpactSubScore"]
+                . " + " . $this->sub_scores["envModifiedExploitabalitySubScore"] . " ) * " . $this->weight["E"]
+                . " * " . $this->weight["RL"] . " * " . $this->weight["RC"] . "),1)";
         }
 
 
@@ -563,49 +667,49 @@ class Cvss3
          * Scores
          */
 
-        $this->scores["baseScore"] = round($this->sub_scores["baseScore"],1);
-        $this->scores["impactSubScore"] = round($this->sub_scores["impactSubScore"],1);
-        $this->scores["exploitabalitySubScore"] = round($this->sub_scores["exploitabalitySubScore"],1);
-        $this->scores["overallScore"] = round($this->sub_scores["baseScore"],1);
+        $this->scores["baseScore"] = round($this->sub_scores["baseScore"], 1);
+        $this->scores["impactSubScore"] = round($this->sub_scores["impactSubScore"], 1);
+        $this->scores["exploitabalitySubScore"] = round($this->sub_scores["exploitabalitySubScore"], 1);
+        $this->scores["overallScore"] = round($this->sub_scores["baseScore"], 1);
 
 
         foreach ($this->tmp as $k => $v) {
-            $this->scores["temporalScore"] = round($this->sub_scores["temporalScore"],1);
+            $this->scores["temporalScore"] = round($this->sub_scores["temporalScore"], 1);
             if (isset($this->vector_input_array[$v])) {
-                $this->scores["overallScore"] = round($this->sub_scores["temporalScore"],1);
+                $this->scores["overallScore"] = round($this->sub_scores["temporalScore"], 1);
             }
         }
 
         foreach ($this->env as $k => $v) {
-            $this->scores["envScore"] = round($this->sub_scores["envScore"],1);
-            $this->scores["envModifiedImpactSubScore"] = round($this->sub_scores["envModifiedImpactSubScore"],1);
+            $this->scores["envScore"] = round($this->sub_scores["envScore"], 1);
+            $this->scores["envModifiedImpactSubScore"] = round($this->sub_scores["envModifiedImpactSubScore"], 1);
             if (isset($this->vector_input_array[$v])) {
-                $this->scores["overallScore"] = round($this->sub_scores["envScore"],1);
+                $this->scores["overallScore"] = round($this->sub_scores["envScore"], 1);
             }
         }
-
     }
 
     /**
      * @throws \Exception
      */
-    private function buildLanguage() {
+    private function buildLanguage()
+    {
 
-        foreach ( $this->scores as $key => $value) {
+        foreach ($this->scores as $key => $value) {
             if (defined("CVSSV3_" . $key)) {
                 $this->scoresLabel[constant("CVSSV3_" . $key)] = $value;
             } else {
                 throw new \Exception('Error in Cvss v3 vector definition', __LINE__);
             }
         }
-        foreach ( $this->sub_scores as $key => $value) {
+        foreach ($this->sub_scores as $key => $value) {
             if (defined("CVSSV3_" . $key)) {
                 $this->sub_scoresLabel[constant("CVSSV3_" . $key)] = $value;
             } else {
                 throw new \Exception('Error in Cvss v3 vector definition', __LINE__);
             }
         }
-        foreach ( $this->vector_input_array as $key => $value) {
+        foreach ($this->vector_input_array as $key => $value) {
             if (defined("CVSSV3_" . $key."_".$value) && constant("CVSSV3_" . $key . "_" . $value)) {
                 $this->vector_inputLabel_array[constant("CVSSV3_" . $key)] = constant("CVSSV3_" . $key . "_" . $value);
             } else {
@@ -623,24 +727,27 @@ class Cvss3
         foreach ($this->vector_input_array as $vec => $input) {
             if (isset($this->metrics_check_mandatory[$vec])) {
                 $this->vector .= "/" . $vec . ":" . $input;
-            } else if (isset($this->metrics_check_optional[$vec]) && $input != 'X' ) {
+            } elseif (isset($this->metrics_check_optional[$vec]) && $input != 'X') {
                 $this->vector .= "/" . $vec . ":" . $input;
-            } else if (isset($this->metrics_check_modified[$vec]) && $input != 'X' ) {
+            } elseif (isset($this->metrics_check_modified[$vec]) && $input != 'X') {
                 $this->vector .= "/" . $vec . ":" . $input;
             }
         }
 
         foreach ($this->base as $vec => $value) {
-            if (isset($this->vector_input_array[$value]))
+            if (isset($this->vector_input_array[$value])) {
                 $this->vector_part['base'] .= "/" . $value . ":" . $this->vector_input_array[$value];
+            }
         }
         foreach ($this->tmp as $vec => $value) {
-            if (isset($this->vector_input_array[$value]) && $this->vector_input_array[$value] != 'X')
+            if (isset($this->vector_input_array[$value]) && $this->vector_input_array[$value] != 'X') {
                 $this->vector_part['tmp'] .= "/" . $value . ":" . $this->vector_input_array[$value];
+            }
         }
         foreach ($this->env as $vec => $value) {
-            if (isset($this->vector_input_array[$value]) && $this->vector_input_array[$value] != 'X')
+            if (isset($this->vector_input_array[$value]) && $this->vector_input_array[$value] != 'X') {
                 $this->vector_part['env'] .= "/" . $value . ":" . $this->vector_input_array[$value];
+            }
         }
 
         foreach ($this->vector_part as $k => $v) {
@@ -651,7 +758,8 @@ class Cvss3
     /**
      *
      */
-    private function clean() {
+    private function clean()
+    {
         $blankInstance = new static;
         $reflBlankInstance = new \ReflectionClass($blankInstance);
         foreach ($reflBlankInstance->getProperties() as $prop) {
