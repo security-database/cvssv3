@@ -8,8 +8,21 @@
 [![License](https://poser.pugx.org/security-database/cvss/license)](https://packagist.org/packages/security-database/cvss)
 
 ###Version
+
+####2.0
+- Change public vars to private vars
+- Add getter to all private vars
+- Add setter to locale vars
+- Add locale validator in __constructor and setter
+- Change phpUnit test case to reflect getter and setter
+- Update documentation
+- Update some DocBlock
+- Update to 2.0 since getters and setters are not backward compatible
+
+- Todo more and more phpUnit test case ...
+
 ####1.3.2
-- Modify docblock with \Exception
+- Modify DocBlock with \Exception
 - Add a Clean() function to be able to clean Object before register another one
 - Add public vector_part (Base, Temp and Env vector part)
 - Modify private to public base, env and tmp
@@ -56,9 +69,20 @@ include_once('Cvss3.php');
 
 After that, create a new vector.
 ```php
+use SecurityDatabase\Cvss\Cvss3;
+
 try {
-	$cvss = new SecurityDatabase\Cvss\Cvss3();
+	$cvss = new Cvss3();
 	$cvss->register("CVSS:3.0/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L");
+	
+    print_r($cvss->getWeight());
+    print_r($cvss->getScores());
+    print_r($cvss->getScoresLabel());
+    print_r($cvss->getSubScores());
+    print_r($cvss->getSubScoresLabel());
+    print_r($cvss->getFormula);
+    print_r($cvss->getVector);
+    (...)
 
 } catch (Exception $e) {
 	print $e->getCode()." : ".$e->getMessage();
@@ -70,7 +94,7 @@ You can now get some informations :
 
 Get weight of every piece of the vector (array());
 ```php
-print_r($cvss->weight);
+print_r($cvss->getWeight());
 /*
 array (size=20)
   'AV' => float 0.85
@@ -98,7 +122,7 @@ array (size=20)
 
 Get scores used in scores (array());
 ```php
-print_r($cvss->scores);
+print_r($cvss->getScores());
 /*
 array (size=7)
   'baseScore' => float 6.7
@@ -113,7 +137,7 @@ array (size=7)
 
 Get scores with label (en_US) used in scoresLabel (array());
 ```php
-print_r($cvss->scoresLabel);
+print_r($cvss->getScoresLabel());
 /*
 array (size=7)
   'Base Score' => float 6.7
@@ -128,7 +152,7 @@ array (size=7)
 
 Get sub scores used in sub_scores (array());
 ```php
-print_r($cvss->scores);
+print_r($cvss->getScores());
 /*
 array (size=9)
   'impactSubScoreMultiplier' => float 0.8064
@@ -145,7 +169,7 @@ array (size=9)
 
 Get sub scores with label (en_US) used in sub_scoresLabel (array());
 ```php
-print_r($cvss->scoresLabel);
+print_r($cvss->getScoresLabel());
 /*
 array (size=9)
   'Impact SubScore Multiplier' => float 0.8064
@@ -163,7 +187,7 @@ array (size=9)
 
 Get Formula with detail
 ```php
-print_r($cvss->formula);
+print_r($cvss->getFormula());
 
 /*
     array (size=9)
@@ -181,7 +205,7 @@ print_r($cvss->formula);
 
 Get the vector
 ```php
-print $cvss->vector;
+print $cvss->getVector();
 
 /* return a string :
    CVSS:3.0/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L

@@ -25,56 +25,102 @@
 
 /* Start use case */
 /*
-$cvss = new SecurityDatabase\Cvss\Cvss3();
+use SecurityDatabase\Cvss\Cvss3;
+
+$cvss = new Cvss3();
 try {
     $cvss->register("CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N");
-    print_r($cvss->weight);
-    print_r($cvss->scores);
-    print_r($cvss->scoresLabel);
-    print_r($cvss->sub_scores);
-    print_r($cvss->sub_scoresLabel);
-    print_r($cvss->formula);
-    print_r($cvss->vector);
+    print_r($cvss->getWeight());
+    print_r($cvss->getScores());
+    print_r($cvss->getScoresLabel());
+    print_r($cvss->getSubScores());
+    print_r($cvss->getSubScoresLabel());
+    print_r($cvss->getFormula);
+    print_r($cvss->getVector);
 
 } catch (\Exception $e) {
     print $e->getCode()." : ".$e->getMessage();
 }
 */
-
 /* End use case */
 
 namespace SecurityDatabase\Cvss;
+
+use ResourceBundle;
 
 class Cvss3
 {
     const VERSION = '3.0';
 
-    public $vector_head = "CVSS:3.0";
-    public $lang = "en_US";
-    public $weight = array();
-    public $sub_scores = array();
-    public $sub_scoresLabel = array();
-    public $scores = array("baseScore" => "NA",
-                           "impactSubScore" => "NA",
-                           "exploitabalitySubScore" => "NA",
-                           "temporalScore" => "NA",
-                           "envScore" => "NA",
-                           "envModifiedImpactSubScore" => "NA",
-                           "overallScore" => "NA"
+    /**
+     * @var string
+     */
+    private $vector_head = "CVSS:3.0";
+
+    /**
+     * @var string
+     */
+    private static $lang = "en_US";
+
+    /**
+     * @var array
+     */
+    private $weight = array();
+    /**
+     * @var array
+     */
+    private $sub_scores = array();
+    /**
+     * @var array
+     */
+    private $sub_scoresLabel = array();
+    /**
+     * @var array
+     */
+    private $scores = array("baseScore" => "NA",
+                            "impactSubScore" => "NA",
+                            "exploitabalitySubScore" => "NA",
+                            "temporalScore" => "NA",
+                            "envScore" => "NA",
+                            "envModifiedImpactSubScore" => "NA",
+                            "overallScore" => "NA"
     );
-    public $scoresLabel = array();
-    public $formula = array();
-
-    public $vector = "";
-
-    public $vector_part = array('base' => '', 'tmp' => '', 'env' => '');
-
-    public $vector_input_array = array();
-    public $vector_inputLabel_array = array();
-
-    public $base = array ('AV', 'AC', 'PR', 'UI', 'S', 'C', 'I', 'A');
-    public $tmp = array ('E', 'RL', 'RC');
-    public $env = array ('CR', 'IR', 'AR', 'MAV', 'MAC', 'MPR', 'MUI', 'MS', 'MC', 'MI', 'MA');
+    /**
+     * @var array
+     */
+    private $scoresLabel = array();
+    /**
+     * @var array
+     */
+    private $formula = array();
+    /**
+     * @var string
+     */
+    private $vector = "";
+    /**
+     * @var array
+     */
+    private $vector_part = array('base' => '', 'tmp' => '', 'env' => '');
+    /**
+     * @var array
+     */
+    private $vector_input_array = array();
+    /**
+     * @var array
+     */
+    private $vector_inputLabel_array = array();
+    /**
+     * @var array
+     */
+    private $base = array ('AV', 'AC', 'PR', 'UI', 'S', 'C', 'I', 'A');
+    /**
+     * @var array
+     */
+    private $tmp = array ('E', 'RL', 'RC');
+    /**
+     * @var array
+     */
+    private $env = array ('CR', 'IR', 'AR', 'MAV', 'MAC', 'MPR', 'MUI', 'MS', 'MC', 'MI', 'MA');
 
     private $metrics_check_mandatory = array(
         "AV" => "[N,A,L,P]",
@@ -247,14 +293,18 @@ class Cvss3
      */
     public function __construct()
     {
-        if (!isset($this->lang)) {
-            throw new \Exception('Not a valid language', __LINE__);
+        if (!isset($this::lang)) {
+            throw new \Exception('Locale is not set', __LINE__);
         }
 
-        if (is_file(__DIR__ . '/Cvss3.' . $this->lang . '.php') == false) {
+        if (array_search($this::$lang, ResourceBundle::getLocales('')) == false) {
+            throw new \Exception('Not a valid locale', __LINE__);
+        }
+
+        if (is_file(__DIR__ . '/Cvss3.' . self::getLocale() . '.php') == false) {
             throw new \Exception('Traduction file does not exist', __LINE__);
         } else {
-            include_once(__DIR__ . '/Cvss3.' . $this->lang . '.php');
+            include_once(__DIR__ . '/Cvss3.' . self::getLocale() . '.php');
         }
     }
 
@@ -279,6 +329,195 @@ class Cvss3
         self::calculate();
         self::constructVector();
         self::buildLanguage();
+    }
+
+    /**
+     * @return string
+     */
+    public function getVectorHead(): string
+    {
+        return $this->vector_head;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        return $this::$lang;
+    }
+
+    /**
+     * @param string $lang
+     * @return bool
+     * @throws \Exception
+     */
+    public function setLocale(string $lang): bool
+    {
+
+        if (!isset($lang)) {
+            throw new \Exception('Locale is not set', __LINE__);
+        }
+
+        if (array_search($lang, ResourceBundle::getLocales('')) == false) {
+            throw new \Exception('Not a valid locale', __LINE__);
+        }
+
+        $this::$lang = $lang;
+
+        return true;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWeight(): array
+    {
+        return $this->weight;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSubScores(): array
+    {
+        return $this->sub_scores;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSubScoresLabel(): array
+    {
+        return $this->sub_scoresLabel;
+    }
+
+    /**
+     * @return array
+     */
+    public function getScores(): array
+    {
+        return $this->scores;
+    }
+
+    /**
+     * @return array
+     */
+    public function getScoresLabel(): array
+    {
+        return $this->scoresLabel;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFormula(): array
+    {
+        return $this->formula;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVector(): string
+    {
+        return $this->vector;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVectorPart(): array
+    {
+        return $this->vector_part;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVectorInputArray(): array
+    {
+        return $this->vector_input_array;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVectorInputLabelArray(): array
+    {
+        return $this->vector_inputLabel_array;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBase(): array
+    {
+        return $this->base;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTmp(): array
+    {
+        return $this->tmp;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEnv(): array
+    {
+        return $this->env;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetricsCheckMandatory(): array
+    {
+        return $this->metrics_check_mandatory;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetricsCheckOptional(): array
+    {
+        return $this->metrics_check_optional;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetricsCheckModified(): array
+    {
+        return $this->metrics_check_modified;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetricsLevelMandatory(): array
+    {
+        return $this->metrics_level_mandatory;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetricsLevelOptional(): array
+    {
+        return $this->metrics_level_optional;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetricsLevelModified(): array
+    {
+        return $this->metrics_level_modified;
     }
 
     /**
