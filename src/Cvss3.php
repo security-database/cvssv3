@@ -60,7 +60,7 @@ class Cvss3
     /**
      * @var string
      */
-    private static $lang = "en_US";
+    private $lang = "en_US";
 
     /**
      * @var array
@@ -293,11 +293,11 @@ class Cvss3
      */
     public function __construct()
     {
-        if (!isset($this::lang)) {
+        if (!isset($this->lang)) {
             throw new \Exception('Locale is not set', __LINE__);
         }
 
-        if (array_search($this::$lang, ResourceBundle::getLocales('')) == false) {
+        if (array_search($this->lang, ResourceBundle::getLocales('')) == false) {
             throw new \Exception('Not a valid locale', __LINE__);
         }
 
@@ -334,7 +334,7 @@ class Cvss3
     /**
      * @return string
      */
-    public function getVectorHead(): string
+    public function getVectorHead()
     {
         return $this->vector_head;
     }
@@ -342,9 +342,9 @@ class Cvss3
     /**
      * @return string
      */
-    public function getLocale(): string
+    public function getLocale()
     {
-        return $this::$lang;
+        return $this->lang;
     }
 
     /**
@@ -352,7 +352,7 @@ class Cvss3
      * @return bool
      * @throws \Exception
      */
-    public function setLocale(string $lang): bool
+    public function setLocale($lang)
     {
 
         if (!isset($lang)) {
@@ -363,7 +363,7 @@ class Cvss3
             throw new \Exception('Not a valid locale', __LINE__);
         }
 
-        $this::$lang = $lang;
+        $this->lang = $lang;
 
         return true;
     }
@@ -371,7 +371,7 @@ class Cvss3
     /**
      * @return array
      */
-    public function getWeight(): array
+    public function getWeight()
     {
         return $this->weight;
     }
@@ -379,7 +379,7 @@ class Cvss3
     /**
      * @return array
      */
-    public function getSubScores(): array
+    public function getSubScores()
     {
         return $this->sub_scores;
     }
@@ -387,7 +387,7 @@ class Cvss3
     /**
      * @return array
      */
-    public function getSubScoresLabel(): array
+    public function getSubScoresLabel()
     {
         return $this->sub_scoresLabel;
     }
@@ -395,7 +395,7 @@ class Cvss3
     /**
      * @return array
      */
-    public function getScores(): array
+    public function getScores()
     {
         return $this->scores;
     }
@@ -403,7 +403,7 @@ class Cvss3
     /**
      * @return array
      */
-    public function getScoresLabel(): array
+    public function getScoresLabel()
     {
         return $this->scoresLabel;
     }
@@ -411,7 +411,7 @@ class Cvss3
     /**
      * @return array
      */
-    public function getFormula(): array
+    public function getFormula()
     {
         return $this->formula;
     }
@@ -419,7 +419,7 @@ class Cvss3
     /**
      * @return string
      */
-    public function getVector(): string
+    public function getVector()
     {
         return $this->vector;
     }
@@ -427,7 +427,7 @@ class Cvss3
     /**
      * @return array
      */
-    public function getVectorPart(): array
+    public function getVectorPart()
     {
         return $this->vector_part;
     }
@@ -435,7 +435,7 @@ class Cvss3
     /**
      * @return array
      */
-    public function getVectorInputArray(): array
+    public function getVectorInputArray()
     {
         return $this->vector_input_array;
     }
@@ -443,7 +443,7 @@ class Cvss3
     /**
      * @return array
      */
-    public function getVectorInputLabelArray(): array
+    public function getVectorInputLabelArray()
     {
         return $this->vector_inputLabel_array;
     }
@@ -451,7 +451,7 @@ class Cvss3
     /**
      * @return array
      */
-    public function getBase(): array
+    public function getBase()
     {
         return $this->base;
     }
@@ -459,7 +459,7 @@ class Cvss3
     /**
      * @return array
      */
-    public function getTmp(): array
+    public function getTmp()
     {
         return $this->tmp;
     }
@@ -467,57 +467,9 @@ class Cvss3
     /**
      * @return array
      */
-    public function getEnv(): array
+    public function getEnv()
     {
         return $this->env;
-    }
-
-    /**
-     * @return array
-     */
-    public function getMetricsCheckMandatory(): array
-    {
-        return $this->metrics_check_mandatory;
-    }
-
-    /**
-     * @return array
-     */
-    public function getMetricsCheckOptional(): array
-    {
-        return $this->metrics_check_optional;
-    }
-
-    /**
-     * @return array
-     */
-    public function getMetricsCheckModified(): array
-    {
-        return $this->metrics_check_modified;
-    }
-
-    /**
-     * @return array
-     */
-    public function getMetricsLevelMandatory(): array
-    {
-        return $this->metrics_level_mandatory;
-    }
-
-    /**
-     * @return array
-     */
-    public function getMetricsLevelOptional(): array
-    {
-        return $this->metrics_level_optional;
-    }
-
-    /**
-     * @return array
-     */
-    public function getMetricsLevelModified(): array
-    {
-        return $this->metrics_level_modified;
     }
 
     /**

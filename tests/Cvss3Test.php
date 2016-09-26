@@ -112,17 +112,16 @@ class Cvss3Test extends PHPUnit_Framework_TestCase {
 
     /**
      * @expectedException Exception
-     *
      */
-    public function testLangException()
+    public function testLangNull()
     {
         $cvss = new Cvss3;
-        $cvss->setLocale('AAA');
+        $this->assertTrue($cvss->setLocale('') == true);
     }
 
     public function testLang()
     {
         $cvss = new Cvss3;
-        $this->assertTrue($cvss->setLocale('en_EN') == true);
+        $this->assertTrue($cvss->setLocale('en_US') == true);
     }
 }
