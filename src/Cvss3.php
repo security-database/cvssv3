@@ -23,27 +23,6 @@
  * @package CVSSv3
  */
 
-/* Start use case */
-/*
-use SecurityDatabase\Cvss\Cvss3;
-
-$cvss = new Cvss3();
-try {
-    $cvss->register("CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N");
-    print_r($cvss->getWeight());
-    print_r($cvss->getScores());
-    print_r($cvss->getScoresLabel());
-    print_r($cvss->getSubScores());
-    print_r($cvss->getSubScoresLabel());
-    print_r($cvss->getFormula);
-    print_r($cvss->getVector);
-
-} catch (\Exception $e) {
-    print $e->getCode()." : ".$e->getMessage();
-}
-*/
-/* End use case */
-
 namespace SecurityDatabase\Cvss;
 
 use ResourceBundle;
@@ -297,11 +276,11 @@ class Cvss3
             throw new \Exception('Locale is not set', __LINE__);
         }
 
-        if (array_search($this->lang, ResourceBundle::getLocales('')) == false) {
+        if (array_search($this->lang, ResourceBundle::getLocales('')) === false) {
             throw new \Exception('Not a valid locale', __LINE__);
         }
 
-        if (is_file(__DIR__ . '/Cvss3.' . self::getLocale() . '.php') == false) {
+        if (is_file(__DIR__ . '/Cvss3.' . self::getLocale() . '.php') === false) {
             throw new \Exception('Traduction file does not exist', __LINE__);
         } else {
             include_once(__DIR__ . '/Cvss3.' . self::getLocale() . '.php');
@@ -359,7 +338,7 @@ class Cvss3
             throw new \Exception('Locale is not set', __LINE__);
         }
 
-        if (array_search($lang, ResourceBundle::getLocales('')) == false) {
+        if (array_search($lang, ResourceBundle::getLocales('')) === false) {
             throw new \Exception('Not a valid locale', __LINE__);
         }
 
@@ -478,7 +457,7 @@ class Cvss3
      */
     private function explodeVector($vector)
     {
-        if (preg_match('/^CVSS:3.0.*/mi', $vector) == false) {
+        if (preg_match('/^CVSS:3.0.*/mi', $vector) === false) {
             throw new \Exception("ERROR: Vector is not valid", __LINE__);
         }
         $vector = str_replace("CVSS:3.0/", "", $vector);
@@ -628,19 +607,19 @@ class Cvss3
 
 
         foreach ($this->metrics_level_mandatory as $metric => $level) {
-            if (isset($this->weight[$metric]) == false) {
+            if (isset($this->weight[$metric]) === false) {
                 throw new \Exception("ERROR in mandatory Scores", __LINE__);
             }
         }
 
         foreach ($this->metrics_level_optional as $metric => $level) {
-            if (isset($this->weight[$metric]) == false) {
+            if (isset($this->weight[$metric]) === false) {
                 $this->weight[$metric] = (float)$this->metrics_level_optional[$metric]["X"];
             }
         }
 
         foreach ($this->metrics_level_modified as $metric => $level) {
-            if (isset($this->weight[$metric]) == false) {
+            if (isset($this->weight[$metric]) === false) {
                 $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
             }
         }
@@ -786,7 +765,7 @@ class Cvss3
          * Modified Impact Sub score
          */
 
-        if (isset($this->vector_input_array["MS"]) == false
+        if (isset($this->vector_input_array["MS"]) === false
             || ( $this->vector_input_array["MS"] == 'U'
                 || ($this->vector_input_array["MS"] == 'X'
                     && $this->vector_input_array["S"] == 'U')
@@ -811,7 +790,7 @@ class Cvss3
          */
 
 
-        if (isset($this->vector_input_array["MS"]) == false
+        if (isset($this->vector_input_array["MS"]) === false
             || ( $this->vector_input_array["MS"] == 'U'
                 || ($this->vector_input_array["MS"] == 'X'
                     && $this->vector_input_array["S"] == 'U')
