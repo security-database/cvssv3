@@ -457,7 +457,7 @@ class Cvss3
      */
     private function explodeVector($vector)
     {
-        if (preg_match('/^CVSS:3.0.*/mi', $vector) === false) {
+        if (!preg_match('/^CVSS:3.0.*/mi', $vector)) {
             throw new \Exception("ERROR: Vector is not valid", __LINE__);
         }
         $vector = str_replace("CVSS:3.0/", "", $vector);
