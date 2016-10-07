@@ -26,6 +26,8 @@
 namespace SecurityDatabase\Cvss;
 
 use ResourceBundle;
+use ReflectionClass;
+use Exception;
 
 class Cvss3
 {
@@ -268,20 +270,20 @@ class Cvss3
 
     /**
      * Cvss3 constructor.
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct()
     {
         if (!isset($this->lang)) {
-            throw new \Exception('Locale is not set', __LINE__);
+            throw new Exception('Locale is not set', __LINE__);
         }
 
         if (array_search($this->lang, ResourceBundle::getLocales('')) === false) {
-            throw new \Exception('Not a valid locale', __LINE__);
+            throw new Exception('Not a valid locale', __LINE__);
         }
 
         if (is_file(__DIR__ . '/Cvss3.' . self::getLocale() . '.php') === false) {
-            throw new \Exception('Traduction file does not exist', __LINE__);
+            throw new Exception('Traduction file does not exist', __LINE__);
         } else {
             include_once(__DIR__ . '/Cvss3.' . self::getLocale() . '.php');
         }
@@ -289,12 +291,12 @@ class Cvss3
 
     /**
      * @param string $vector
-     * @throws \Exception
+     * @throws Exception
      */
     public function register($vector)
     {
         if (strlen($vector) == 0) {
-            throw new \Exception("ERROR: Vector is not defined", __LINE__);
+            throw new Exception("ERROR: Vector is not defined", __LINE__);
         }
 
         self::clean();
@@ -329,17 +331,17 @@ class Cvss3
     /**
      * @param string $lang
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function setLocale($lang)
     {
 
         if (!isset($lang)) {
-            throw new \Exception('Locale is not set', __LINE__);
+            throw new Exception('Locale is not set', __LINE__);
         }
 
         if (array_search($lang, ResourceBundle::getLocales('')) === false) {
-            throw new \Exception('Not a valid locale', __LINE__);
+            throw new Exception('Not a valid locale', __LINE__);
         }
 
         $this->lang = $lang;
@@ -453,12 +455,12 @@ class Cvss3
 
     /**
      * @param string $vector
-     * @throws \Exception
+     * @throws Exception
      */
     private function explodeVector($vector)
     {
         if (!preg_match('/^CVSS:3.0.*/mi', $vector)) {
-            throw new \Exception("ERROR: Vector is not valid", __LINE__);
+            throw new Exception("ERROR: Vector is not valid", __LINE__);
         }
         $vector = str_replace("CVSS:3.0/", "", $vector);
         $vector_input_array_temp = explode('/', $vector);
@@ -471,69 +473,69 @@ class Cvss3
 
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function checkMandatory()
     {
         foreach ($this->metrics_check_mandatory as $metrics_mandatory => $value_mandatory) {
             if (isset($this->vector_input_array[$metrics_mandatory])) {
                 if (!preg_match("|" . $value_mandatory . "|", $this->vector_input_array[$metrics_mandatory])) {
-                    throw new \Exception("ERROR: " . $metrics_mandatory . " error in value", __LINE__);
+                    throw new Exception("ERROR: " . $metrics_mandatory . " error in value", __LINE__);
                 }
             } else {
-                throw new \Exception("ERROR: " . $metrics_mandatory . " not set", __LINE__);
+                throw new Exception("ERROR: " . $metrics_mandatory . " not set", __LINE__);
             }
         }
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function checkOptional()
     {
         foreach ($this->metrics_check_optional as $metrics_optional => $value_optional) {
             if (isset($this->vector_input_array[$metrics_optional])) {
                 if (!preg_match("|" . $value_optional . "|", $this->vector_input_array[$metrics_optional])) {
-                    throw new \Exception("ERROR: " . $metrics_optional . " error in value", __LINE__);
+                    throw new Exception("ERROR: " . $metrics_optional . " error in value", __LINE__);
                 }
             }
         }
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function checkModified()
     {
         foreach ($this->metrics_check_modified as $metrics_modified => $value_modified) {
             if (isset($this->vector_input_array[$value_modified])) {
                 if (!preg_match("|" . $value_modified . "|", $this->vector_input_array[$value_modified])) {
-                    throw new \Exception("ERROR: " . $metrics_modified . " error in value", __LINE__);
+                    throw new Exception("ERROR: " . $metrics_modified . " error in value", __LINE__);
                 }
             }
         }
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function checkInput()
     {
         foreach ($this->vector_input_array as $key => $value) {
             if (isset($this->metrics_check_mandatory[$key])) {
                 if (!preg_match("|" . $value . "|", $this->metrics_check_mandatory[$key])) {
-                    throw new \Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
+                    throw new Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
                 }
             } elseif (isset($this->metrics_check_optional[$key])) {
                 if (!preg_match("|" . $value . "|", $this->metrics_check_optional[$key])) {
-                    throw new \Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
+                    throw new Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
                 }
             } elseif (isset($this->metrics_check_modified[$key])) {
                 if (!preg_match("|" . $value . "|", $this->metrics_check_modified[$key])) {
-                    throw new \Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
+                    throw new Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
                 }
             } else {
-                throw new \Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
+                throw new Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
             }
         }
     }
@@ -541,7 +543,7 @@ class Cvss3
 
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
      */
     private function constructWeights()
@@ -608,7 +610,7 @@ class Cvss3
 
         foreach ($this->metrics_level_mandatory as $metric => $level) {
             if (isset($this->weight[$metric]) === false) {
-                throw new \Exception("ERROR in mandatory Scores", __LINE__);
+                throw new Exception("ERROR in mandatory Scores", __LINE__);
             }
         }
 
@@ -626,7 +628,7 @@ class Cvss3
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function calculate()
     {
@@ -667,7 +669,7 @@ class Cvss3
             $this->formula["impactSubScore"] = "7.52 * ( " . $this->sub_scores["impactSubScoreMultiplier"]
                 . " - 0.029 ) - 3.25 * pow(( " . $this->sub_scores["impactSubScoreMultiplier"] . " - 0.02 ),15)";
         } else {
-            throw new \Exception("ERROR: on Scope", __LINE__);
+            throw new Exception("ERROR: on Scope", __LINE__);
         }
 
         /**
@@ -709,7 +711,7 @@ class Cvss3
             $this->formula["baseScore"] = "roundUp( min( 10 , 1.08 * ( " . $this->sub_scores["impactSubScore"]
                 . " + " . $this->sub_scores["exploitabalitySubScore"] . " ) ) )";
         } else {
-            throw new \Exception("ERROR: on Base Score calcul", __LINE__);
+            throw new Exception("ERROR: on Base Score calcul", __LINE__);
         }
 
         /**
@@ -860,7 +862,7 @@ class Cvss3
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function buildLanguage()
     {
@@ -869,21 +871,21 @@ class Cvss3
             if (defined("CVSSV3_" . $key)) {
                 $this->scoresLabel[constant("CVSSV3_" . $key)] = $value;
             } else {
-                throw new \Exception('Error in Cvss v3 vector definition', __LINE__);
+                throw new Exception('Error in Cvss v3 vector definition', __LINE__);
             }
         }
         foreach ($this->sub_scores as $key => $value) {
             if (defined("CVSSV3_" . $key)) {
                 $this->sub_scoresLabel[constant("CVSSV3_" . $key)] = $value;
             } else {
-                throw new \Exception('Error in Cvss v3 vector definition', __LINE__);
+                throw new Exception('Error in Cvss v3 vector definition', __LINE__);
             }
         }
         foreach ($this->vector_input_array as $key => $value) {
             if (defined("CVSSV3_" . $key."_".$value) && constant("CVSSV3_" . $key . "_" . $value)) {
                 $this->vector_inputLabel_array[constant("CVSSV3_" . $key)] = constant("CVSSV3_" . $key . "_" . $value);
             } else {
-                throw new \Exception('Error in Cvss v3 vector definition', __LINE__);
+                throw new Exception('Error in Cvss v3 vector definition', __LINE__);
             }
         }
     }
@@ -931,7 +933,7 @@ class Cvss3
     private function clean()
     {
         $blankInstance = new static;
-        $reflBlankInstance = new \ReflectionClass($blankInstance);
+        $reflBlankInstance = new ReflectionClass($blankInstance);
         foreach ($reflBlankInstance->getProperties() as $prop) {
             $prop->setAccessible(true);
             $this->{$prop->name} = $prop->getValue($blankInstance);
