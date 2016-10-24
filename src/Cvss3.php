@@ -836,6 +836,7 @@ class Cvss3
 
         if ($this->sub_scores["envModifiedImpactSubScore"] <= 0) {
             $this->sub_scores["envScore"] = 0;
+            $this->formula["envScore"] = 0;
         }
 
         /**
@@ -862,8 +863,6 @@ class Cvss3
                 $this->scores["overallScore"] = round($this->sub_scores["envScore"], 1);
             }
         }
-
-
     }
 
     /**
@@ -939,9 +938,15 @@ class Cvss3
     {
         $blankInstance = new static;
         $reflBlankInstance = new ReflectionClass($blankInstance);
-        foreach ($reflBlankInstance->getProperties() as $prop) {
-            $prop->setAccessible(true);
-            $this->{$prop->name} = $prop->getValue($blankInstance);
+
+        $properties = $reflBlankInstance->getProperties();
+        $staticProperties = $reflBlankInstance->getStaticProperties();
+
+        foreach ($properties as $kprop => $prop) {
+            if (array_key_exists($prop->name, $staticProperties) == false) {
+                $prop->setAccessible(true);
+                $this->{$prop->name} = $prop->getValue($blankInstance);
+            }
         }
     }
     /**
