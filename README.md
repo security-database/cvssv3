@@ -9,6 +9,10 @@
 
 ###Version
 
+####2.0.1
+- EnvScore calcultation fix when envModifiedImpactSubScore <= 0
+- Change some props to static
+
 ####2.0
 - Change public vars to private vars
 - Add getter to all private vars

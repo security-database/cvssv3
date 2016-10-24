@@ -36,7 +36,7 @@ class Cvss3
     /**
      * @var string
      */
-    private $vector_head = "CVSS:3.0";
+    private static $vector_head = "CVSS:3.0";
 
     /**
      * @var string
@@ -93,17 +93,17 @@ class Cvss3
     /**
      * @var array
      */
-    private $base = array ('AV', 'AC', 'PR', 'UI', 'S', 'C', 'I', 'A');
+    private static $base = array ('AV', 'AC', 'PR', 'UI', 'S', 'C', 'I', 'A');
     /**
      * @var array
      */
-    private $tmp = array ('E', 'RL', 'RC');
+    private static $tmp = array ('E', 'RL', 'RC');
     /**
      * @var array
      */
-    private $env = array ('CR', 'IR', 'AR', 'MAV', 'MAC', 'MPR', 'MUI', 'MS', 'MC', 'MI', 'MA');
+    private static $env = array ('CR', 'IR', 'AR', 'MAV', 'MAC', 'MPR', 'MUI', 'MS', 'MC', 'MI', 'MA');
 
-    private $metrics_check_mandatory = array(
+    private static $metrics_check_mandatory = array(
         "AV" => "[N,A,L,P]",
         "AC" => "[L,H]",
         "PR" => "[N,L,H]",
@@ -114,7 +114,7 @@ class Cvss3
         "A"  => "[N,L,H]"
     );
 
-    private $metrics_check_optional = array(
+    private static $metrics_check_optional = array(
         "E"  => "[X,U,P,F,H]",
         "RL" => "[X,O,T,W,U]",
         "RC" => "[X,U,R,C]",
@@ -123,7 +123,7 @@ class Cvss3
         "AR" => "[X,L,M,H]"
     );
 
-    private $metrics_check_modified = array(
+    private static $metrics_check_modified = array(
         "MAV" => "[X,N,A,L,P]",
         "MAC" => "[X,L,H]",
         "MPR" => "[X,N,L,H]",
@@ -134,7 +134,7 @@ class Cvss3
         "MA"  => "[X,N,L,H]"
     );
 
-    private $metrics_level_mandatory = array(
+    private static $metrics_level_mandatory = array(
         "AV" => array(
             "N" => 0.85,
             "A" => 0.62,
@@ -177,7 +177,7 @@ class Cvss3
         )
     );
 
-    private $metrics_level_optional = array(
+    private static $metrics_level_optional = array(
         "E"  => array(
             "X" => 1,
             "U" => 0.91,
@@ -218,7 +218,7 @@ class Cvss3
         )
     );
 
-    private $metrics_level_modified = array(
+    private static $metrics_level_modified = array(
         "MAV" => array(
             "X" => 0,
             "N" => 0.85,
@@ -317,7 +317,7 @@ class Cvss3
      */
     public function getVectorHead()
     {
-        return $this->vector_head;
+        return self::$vector_head;
     }
 
     /**
@@ -434,7 +434,7 @@ class Cvss3
      */
     public function getBase()
     {
-        return $this->base;
+        return self::$base;
     }
 
     /**
@@ -442,7 +442,7 @@ class Cvss3
      */
     public function getTmp()
     {
-        return $this->tmp;
+        return self::$tmp;
     }
 
     /**
@@ -450,7 +450,7 @@ class Cvss3
      */
     public function getEnv()
     {
-        return $this->env;
+        return self::$env;
     }
 
     /**
@@ -477,7 +477,7 @@ class Cvss3
      */
     private function checkMandatory()
     {
-        foreach ($this->metrics_check_mandatory as $metrics_mandatory => $value_mandatory) {
+        foreach (self::$metrics_check_mandatory as $metrics_mandatory => $value_mandatory) {
             if (isset($this->vector_input_array[$metrics_mandatory])) {
                 if (!preg_match("|" . $value_mandatory . "|", $this->vector_input_array[$metrics_mandatory])) {
                     throw new Exception("ERROR: " . $metrics_mandatory . " error in value", __LINE__);
@@ -493,7 +493,7 @@ class Cvss3
      */
     private function checkOptional()
     {
-        foreach ($this->metrics_check_optional as $metrics_optional => $value_optional) {
+        foreach (self::$metrics_check_optional as $metrics_optional => $value_optional) {
             if (isset($this->vector_input_array[$metrics_optional])) {
                 if (!preg_match("|" . $value_optional . "|", $this->vector_input_array[$metrics_optional])) {
                     throw new Exception("ERROR: " . $metrics_optional . " error in value", __LINE__);
@@ -507,7 +507,7 @@ class Cvss3
      */
     private function checkModified()
     {
-        foreach ($this->metrics_check_modified as $metrics_modified => $value_modified) {
+        foreach (self::$metrics_check_modified as $metrics_modified => $value_modified) {
             if (isset($this->vector_input_array[$value_modified])) {
                 if (!preg_match("|" . $value_modified . "|", $this->vector_input_array[$value_modified])) {
                     throw new Exception("ERROR: " . $metrics_modified . " error in value", __LINE__);
@@ -522,16 +522,16 @@ class Cvss3
     private function checkInput()
     {
         foreach ($this->vector_input_array as $key => $value) {
-            if (isset($this->metrics_check_mandatory[$key])) {
-                if (!preg_match("|" . $value . "|", $this->metrics_check_mandatory[$key])) {
+            if (isset(self::$metrics_check_mandatory[$key])) {
+                if (!preg_match("|" . $value . "|", self::$metrics_check_mandatory[$key])) {
                     throw new Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
                 }
-            } elseif (isset($this->metrics_check_optional[$key])) {
-                if (!preg_match("|" . $value . "|", $this->metrics_check_optional[$key])) {
+            } elseif (isset(self::$metrics_check_optional[$key])) {
+                if (!preg_match("|" . $value . "|", self::$metrics_check_optional[$key])) {
                     throw new Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
                 }
-            } elseif (isset($this->metrics_check_modified[$key])) {
-                if (!preg_match("|" . $value . "|", $this->metrics_check_modified[$key])) {
+            } elseif (isset(self::$metrics_check_modified[$key])) {
+                if (!preg_match("|" . $value . "|", self::$metrics_check_modified[$key])) {
                     throw new Exception("ERROR: Cvss v3 vector is not compliant!", __LINE__);
                 }
             } else {
@@ -552,29 +552,29 @@ class Cvss3
         foreach ($this->vector_input_array as $metric => $value) {
             if ($metric == "PR") {
                 if ($this->vector_input_array["S"] == "C" && ($value == "L" || $value == "H")) {
-                    if (isset($this->metrics_level_mandatory[$metric][$value])) {
-                        $this->weight[$metric] = (float)$this->metrics_level_mandatory[$metric][$value]["Scope"];
+                    if (isset(self::$metrics_level_mandatory[$metric][$value])) {
+                        $this->weight[$metric] = (float)self::$metrics_level_mandatory[$metric][$value]["Scope"];
                     }
                 } elseif ($this->vector_input_array["S"] == "U" && ($value == "L" || $value == "H")) {
-                    if (isset($this->metrics_level_mandatory[$metric][$value])) {
-                        $this->weight[$metric] = (float)$this->metrics_level_mandatory[$metric][$value]["Default"];
+                    if (isset(self::$metrics_level_mandatory[$metric][$value])) {
+                        $this->weight[$metric] = (float)self::$metrics_level_mandatory[$metric][$value]["Default"];
                     }
                 } else {
-                    if (isset($this->metrics_level_mandatory[$metric][$value])) {
-                        $this->weight[$metric] = (float)$this->metrics_level_mandatory[$metric][$value];
+                    if (isset(self::$metrics_level_mandatory[$metric][$value])) {
+                        $this->weight[$metric] = (float)self::$metrics_level_mandatory[$metric][$value];
                     }
                 }
             } else {
-                if (isset($this->metrics_level_mandatory[$metric][$value])) {
-                    $this->weight[$metric] = (float)$this->metrics_level_mandatory[$metric][$value];
+                if (isset(self::$metrics_level_mandatory[$metric][$value])) {
+                    $this->weight[$metric] = (float)self::$metrics_level_mandatory[$metric][$value];
                 }
             }
         }
 
         //Optional
         foreach ($this->vector_input_array as $metric => $value) {
-            if (isset($this->metrics_level_optional[$metric][$value])) {
-                $this->weight[$metric] = (float)$this->metrics_level_optional[$metric][$value];
+            if (isset(self::$metrics_level_optional[$metric][$value])) {
+                $this->weight[$metric] = (float)self::$metrics_level_optional[$metric][$value];
             }
         }
 
@@ -582,24 +582,24 @@ class Cvss3
         foreach ($this->vector_input_array as $metric => $value) {
             if ($metric == "MPR") {
                 if ($this->vector_input_array["MS"] == "C" && ($value == "L" || $value == "H")) {
-                    if (isset($this->metrics_level_modified[$metric][$value])) {
-                        $this->weight[$metric] = (float)$this->metrics_level_modified[$metric][$value]["Scope"];
+                    if (isset(self::$metrics_level_modified[$metric][$value])) {
+                        $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Scope"];
                     }
                 } elseif ($this->vector_input_array["MS"] == "U" && ($value == "L" || $value == "H")) {
-                    if (isset($this->metrics_level_modified[$metric][$value])) {
-                        $this->weight[$metric] = (float)$this->metrics_level_modified[$metric][$value]["Default"];
+                    if (isset(self::$metrics_level_modified[$metric][$value])) {
+                        $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Default"];
                     }
                 } elseif ($value != 'X') {
-                    if (isset($this->metrics_level_modified[$metric][$value])) {
-                        $this->weight[$metric] = (float)$this->metrics_level_modified[$metric][$value];
+                    if (isset(self::$metrics_level_modified[$metric][$value])) {
+                        $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value];
                     }
                 } else {
                     $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
                 }
             } else {
-                if (isset($this->metrics_level_modified[$metric][$value])) {
+                if (isset(self::$metrics_level_modified[$metric][$value])) {
                     if ($value != 'X') {
-                        $this->weight[$metric] = (float)$this->metrics_level_modified[$metric][$value];
+                        $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value];
                     } else {
                         $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
                     }
@@ -608,19 +608,19 @@ class Cvss3
         }
 
 
-        foreach ($this->metrics_level_mandatory as $metric => $level) {
+        foreach (self::$metrics_level_mandatory as $metric => $level) {
             if (isset($this->weight[$metric]) === false) {
                 throw new Exception("ERROR in mandatory Scores", __LINE__);
             }
         }
 
-        foreach ($this->metrics_level_optional as $metric => $level) {
+        foreach (self::$metrics_level_optional as $metric => $level) {
             if (isset($this->weight[$metric]) === false) {
-                $this->weight[$metric] = (float)$this->metrics_level_optional[$metric]["X"];
+                $this->weight[$metric] = (float)self::$metrics_level_optional[$metric]["X"];
             }
         }
 
-        foreach ($this->metrics_level_modified as $metric => $level) {
+        foreach (self::$metrics_level_modified as $metric => $level) {
             if (isset($this->weight[$metric]) === false) {
                 $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
             }
@@ -834,6 +834,9 @@ class Cvss3
                 . " * " . $this->weight["RL"] . " * " . $this->weight["RC"] . "),1)";
         }
 
+        if ($this->sub_scores["envModifiedImpactSubScore"] <= 0) {
+            $this->sub_scores["envScore"] = 0;
+        }
 
         /**
          * Scores
@@ -845,20 +848,22 @@ class Cvss3
         $this->scores["overallScore"] = round($this->sub_scores["baseScore"], 1);
 
 
-        foreach ($this->tmp as $k => $v) {
+        foreach (self::$tmp as $k => $v) {
             $this->scores["temporalScore"] = round($this->sub_scores["temporalScore"], 1);
             if (isset($this->vector_input_array[$v])) {
                 $this->scores["overallScore"] = round($this->sub_scores["temporalScore"], 1);
             }
         }
 
-        foreach ($this->env as $k => $v) {
+        foreach (self::$env as $k => $v) {
             $this->scores["envScore"] = round($this->sub_scores["envScore"], 1);
             $this->scores["envModifiedImpactSubScore"] = round($this->sub_scores["envModifiedImpactSubScore"], 1);
             if (isset($this->vector_input_array[$v])) {
                 $this->scores["overallScore"] = round($this->sub_scores["envScore"], 1);
             }
         }
+
+
     }
 
     /**
@@ -894,29 +899,29 @@ class Cvss3
      */
     private function constructVector()
     {
-        $this->vector = $this->vector_head;
+        $this->vector = self::$vector_head;
 
         foreach ($this->vector_input_array as $vec => $input) {
-            if (isset($this->metrics_check_mandatory[$vec])) {
+            if (isset(self::$metrics_check_mandatory[$vec])) {
                 $this->vector .= "/" . $vec . ":" . $input;
-            } elseif (isset($this->metrics_check_optional[$vec]) && $input != 'X') {
+            } elseif (isset(self::$metrics_check_optional[$vec]) && $input != 'X') {
                 $this->vector .= "/" . $vec . ":" . $input;
-            } elseif (isset($this->metrics_check_modified[$vec]) && $input != 'X') {
+            } elseif (isset(self::$metrics_check_modified[$vec]) && $input != 'X') {
                 $this->vector .= "/" . $vec . ":" . $input;
             }
         }
 
-        foreach ($this->base as $vec => $value) {
+        foreach (self::$base as $vec => $value) {
             if (isset($this->vector_input_array[$value])) {
                 $this->vector_part['base'] .= "/" . $value . ":" . $this->vector_input_array[$value];
             }
         }
-        foreach ($this->tmp as $vec => $value) {
+        foreach (self::$tmp as $vec => $value) {
             if (isset($this->vector_input_array[$value]) && $this->vector_input_array[$value] != 'X') {
                 $this->vector_part['tmp'] .= "/" . $value . ":" . $this->vector_input_array[$value];
             }
         }
-        foreach ($this->env as $vec => $value) {
+        foreach (self::$env as $vec => $value) {
             if (isset($this->vector_input_array[$value]) && $this->vector_input_array[$value] != 'X') {
                 $this->vector_part['env'] .= "/" . $value . ":" . $this->vector_input_array[$value];
             }
