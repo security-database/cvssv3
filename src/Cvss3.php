@@ -949,6 +949,7 @@ class Cvss3
             }
         }
     }
+
     /**
      * @param float $number number to round
      * @param number $precision precision for round

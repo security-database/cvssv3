@@ -11,7 +11,9 @@
 
 ####2.0.1
 - EnvScore calcultation fix when envModifiedImpactSubScore <= 0
+- EnvScore Formula set to 0 in that case
 - Change some props to static
+- Change Clean method to handle static properties
 
 ####2.0
 - Change public vars to private vars
