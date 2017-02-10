@@ -581,22 +581,35 @@ class Cvss3
         //Modified
         foreach ($this->vector_input_array as $metric => $value) {
             if ($metric == "MPR" && isset(self::$metrics_level_modified[$metric][$value])) {
-                if ((isset($this->vector_input_array["MS"]) === false
-                        || $this->vector_input_array["MS"] == "X"
-                        || $this->vector_input_array["MS"] == "C")
-                    && ($value == "L" || $value == "H")
-                ) {
+
+                if (isset($this->vector_input_array["MS"]) === false || $this->vector_input_array["MS"] == "X") {
+                    if ($this->vector_input_array["S"] == "C" && ($value == "L" || $value == "H")) {
                         $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Scope"];
-                } elseif ((isset($this->vector_input_array["MS"]) === false
-                        || $this->vector_input_array["MS"] == "X"
-                        || $this->vector_input_array["MS"] == "U")
-                    && ($value == "L" || $value == "H")
-                ) {
-                    $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Default"];
-                } elseif ($value != 'X') {
-                    $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value];
+                    } elseif ($this->vector_input_array["S"] == "U" && ($value == "L" || $value == "H")) {
+                        $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Default"];
+                    } elseif ($value != 'X') {
+                        $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value];
+                    } else {
+                        $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
+                    }
                 } else {
-                    $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
+                    if ((isset($this->vector_input_array["MS"]) === false
+                            || $this->vector_input_array["MS"] == "X"
+                            || $this->vector_input_array["MS"] == "C")
+                        && ($value == "L" || $value == "H")
+                    ) {
+                        $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Scope"];
+                    } elseif ((isset($this->vector_input_array["MS"]) === false
+                            || $this->vector_input_array["MS"] == "X"
+                            || $this->vector_input_array["MS"] == "U")
+                        && ($value == "L" || $value == "H")
+                    ) {
+                        $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Default"];
+                    } elseif ($value != 'X') {
+                        $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value];
+                    } else {
+                        $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
+                    }
                 }
             } else {
                 if (isset(self::$metrics_level_modified[$metric][$value])) {

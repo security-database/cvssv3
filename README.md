@@ -10,6 +10,10 @@
 ###Version
 
 
+####2.0.3-dev
+- EnvScore calcultation fix with MPR and Scope when MS is not set (again)
+- Add some UnitTest on vectors vs CVSSv3 website
+
 ####2.0.2
 - EnvScore calcultation fix with MPR and Scope when MS is not set
 - EnvScore Formula, with now 2 RoundUp instead of One

@@ -145,6 +145,19 @@ class Cvss3Test extends PHPUnit_Framework_TestCase {
 
     }
 
+    public function testVector6()
+    {
+        $vector = "CVSS:3.0/AV:A/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MAC:H/MPR:H/MUI:R/MC:L/MI:N";
+        $cvss = new Cvss3;
+        $cvss->register($vector);
+        $this->assertTrue( 8.0 === (float)$cvss->getScores()["baseScore"]);
+        $this->assertTrue( 8.0 === (float)$cvss->getScores()["temporalScore"]);
+        $this->assertTrue( 4.6 === (float)$cvss->getScores()["envScore"]);
+
+    }
+
+
+
     /**
      * @expectedException Exception
      *
