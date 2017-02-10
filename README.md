@@ -10,7 +10,7 @@
 ###Version
 
 
-####2.0.3-dev
+####2.0.3
 - EnvScore calcultation fix with MPR and Scope when MS is not set (again)
 - Add some UnitTest on vectors vs CVSSv3 website
 
