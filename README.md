@@ -12,6 +12,7 @@
 
 ####2.0.3
 - EnvScore calcultation fix with MPR and Scope when MS is not set (again)
+- Cleaner code push by @faynwol
 - Add some UnitTest on vectors vs CVSSv3 website
 
 ####2.0.2
@@ -229,4 +230,4 @@ print $cvss->getVector();
 ```
 
 ####Contribute
-If you found any error on the class, please contact us at "info at security-database.com"
+If you found any error on the class, please, fork it, push a PR or contact us at "info at security-database.com"
