@@ -73,6 +73,14 @@ class Cvss3
     /**
      * @var array
      */
+    private $severityRatings = array(
+        'baseRating' => 'NA',
+        'tempRating' => 'NA',
+        'envRating'  => 'NA'
+    );
+    /**
+     * @var array
+     */
     private $formula = array();
     /**
      * @var string
@@ -268,6 +276,14 @@ class Cvss3
         )
     );
 
+    private static $severityRatingsRange = array(
+        'None'     => array('bottom' => 0.0, 'top' => 0.0),
+        'Low'      => array('bottom' => 0.1, 'top' => 3.9),
+        'Medium'   => array('bottom' => 4.0, 'top' => 6.9),
+        'High'     => array('bottom' => 7.0, 'top' => 8.9),
+        'Critical' => array('bottom' => 9.0, 'top' => 10.0),
+    );
+
     /**
      * Cvss3 constructor.
      * @throws Exception
@@ -308,6 +324,7 @@ class Cvss3
         self::checkModified();
         self::constructWeights();
         self::calculate();
+        self::constructRatings();
         self::constructVector();
         self::buildLanguage();
     }
@@ -451,6 +468,13 @@ class Cvss3
     public function getEnv()
     {
         return self::$env;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRatings() {
+        return $this->severityRatings;
     }
 
     /**
@@ -861,6 +885,23 @@ class Cvss3
             $this->scores["envModifiedImpactSubScore"] = round($this->sub_scores["envModifiedImpactSubScore"], 1);
             if (isset($this->vector_input_array[$v])) {
                 $this->scores["overallScore"] = round($this->sub_scores["envScore"], 1);
+            }
+        }
+    }
+
+    private function constructRatings() {
+        foreach (self::$severityRatingsRange as $k => $v) {
+            if ($this->severityRatings['baseRating'] === 'NA' &&
+                $this->scores['baseScore'] >= $v['bottom'] && $this->scores['baseScore'] <= $v['top']) {
+                $this->severityRatings['baseRating'] = $k;
+            }
+            if ($this->severityRatings['tempRating'] === 'NA' &&
+                $this->scores['temporalScore'] >= $v['bottom'] && $this->scores['temporalScore'] <= $v['top']) {
+                $this->severityRatings['tempRating'] = $k;
+            }
+            if ($this->severityRatings['envRating'] === 'NA' &&
+                $this->scores['envScore'] >= $v['bottom'] && $this->scores['envScore'] <= $v['top']) {
+                $this->severityRatings['envRating'] = $k;
             }
         }
     }
