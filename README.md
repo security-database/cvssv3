@@ -97,8 +97,8 @@ try {
     print_r($cvss->getScoresLabel());
     print_r($cvss->getSubScores());
     print_r($cvss->getSubScoresLabel());
-    print_r($cvss->getFormula);
-    print_r($cvss->getVector);
+    print_r($cvss->getFormula());
+    print_r($cvss->getVector());
     (...)
 
 } catch (Exception $e) {
