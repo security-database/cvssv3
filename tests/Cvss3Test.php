@@ -156,6 +156,24 @@ class Cvss3Test extends PHPUnit_Framework_TestCase {
 
     }
 
+    public function testRatings1() {
+        $vector = "CVSS:3.0/AV:A/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MAC:H/MPR:H/MUI:R/MC:L/MI:N";
+        $cvss = new Cvss3;
+        $cvss->register($vector);
+        $this->assertTrue('High' === $cvss->getRatings()['baseRating']);
+        $this->assertTrue('High' === $cvss->getRatings()['tempRating']);
+        $this->assertTrue('Medium' === $cvss->getRatings()['envRating']);
+    }
+
+    public function testRatings2() {
+        $vector = "CVSS:3.0/AV:A/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N/MAC:H/MPR:H/MUI:R/MC:L/MI:N/MA:H";
+        $cvss = new Cvss3;
+        $cvss->register($vector);
+        $this->assertTrue('Low' === $cvss->getRatings()['baseRating']);
+        $this->assertTrue('Low' === $cvss->getRatings()['tempRating']);
+        $this->assertTrue('Medium' === $cvss->getRatings()['envRating']);
+    }
+
 
 
     /**

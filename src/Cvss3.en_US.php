@@ -13,6 +13,10 @@ define("CVSSV3_exploitabalitySubScore", "Exploitabality Sub Score");
 define("CVSSV3_impactSubScore", "impact SubScore");
 define("CVSSV3_impactSubScoreMultiplier", "Impact SubScore Multiplier");
 
+define("CVSSV3_baseRating", "Base Rating");
+define("CVSSV3_tempRating", "Temporal Rating");
+define("CVSSV3_envRating", "Environmental Rating");
+
 define('CVSSV3_overallScore', 'Overall CVSS Score');
 
 define("CVSSV3_baseMetricGroup_Legend", "This metric group represents the intrinsic and fundamental characteristics of a vulnerability that are constant over time and user environments. Determine the affected authorization scope and score Attack Vector, Attack Complexity, Privileges Required and User Interaction relative to this component.");
