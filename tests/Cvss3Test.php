@@ -102,7 +102,6 @@ class Cvss3Test extends PHPUnit_Framework_TestCase
         $this->assertTrue(9.0 === (float)$cvss->getScores()["baseScore"]);
         $this->assertTrue(9.0 === (float)$cvss->getScores()["temporalScore"]);
         $this->assertTrue(5.9 === (float)$cvss->getScores()["envScore"]);
-
     }
 
     public function testVector2()
@@ -113,7 +112,6 @@ class Cvss3Test extends PHPUnit_Framework_TestCase
         $this->assertTrue(8.4 === (float)$cvss->getScores()["baseScore"]);
         $this->assertTrue(8.0 === (float)$cvss->getScores()["temporalScore"]);
         $this->assertTrue(7.0 === (float)$cvss->getScores()["envScore"]);
-
     }
 
     public function testVector3()
@@ -124,7 +122,6 @@ class Cvss3Test extends PHPUnit_Framework_TestCase
         $this->assertTrue(8.4 === (float)$cvss->getScores()["baseScore"]);
         $this->assertTrue(8.0 === (float)$cvss->getScores()["temporalScore"]);
         $this->assertTrue(6.0 === (float)$cvss->getScores()["envScore"]);
-
     }
 
     public function testVector4()
@@ -135,7 +132,6 @@ class Cvss3Test extends PHPUnit_Framework_TestCase
         $this->assertTrue(8.0 === (float)$cvss->getScores()["baseScore"]);
         $this->assertTrue(7.2 === (float)$cvss->getScores()["temporalScore"]);
         $this->assertTrue(7.0 === (float)$cvss->getScores()["envScore"]);
-
     }
 
     public function testVector5()
@@ -146,7 +142,6 @@ class Cvss3Test extends PHPUnit_Framework_TestCase
         $this->assertTrue(8.0 === (float)$cvss->getScores()["baseScore"]);
         $this->assertTrue(6.6 === (float)$cvss->getScores()["temporalScore"]);
         $this->assertTrue(7.1 === (float)$cvss->getScores()["envScore"]);
-
     }
 
     public function testVector6()
@@ -157,11 +152,10 @@ class Cvss3Test extends PHPUnit_Framework_TestCase
         $this->assertTrue(8.0 === (float)$cvss->getScores()["baseScore"]);
         $this->assertTrue(8.0 === (float)$cvss->getScores()["temporalScore"]);
         $this->assertTrue(4.6 === (float)$cvss->getScores()["envScore"]);
-
     }
 
-<<<<<<< Updated upstream
-    public function testRatings1() {
+    public function testRatings1()
+    {
         $vector = "CVSS:3.0/AV:A/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MAC:H/MPR:H/MUI:R/MC:L/MI:N";
         $cvss = new Cvss3;
         $cvss->register($vector);
@@ -170,7 +164,8 @@ class Cvss3Test extends PHPUnit_Framework_TestCase
         $this->assertTrue('Medium' === $cvss->getRatings()['envRating']);
     }
 
-    public function testRatings2() {
+    public function testRatings2()
+    {
         $vector = "CVSS:3.0/AV:A/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N/MAC:H/MPR:H/MUI:R/MC:L/MI:N/MA:H";
         $cvss = new Cvss3;
         $cvss->register($vector);
@@ -179,14 +174,13 @@ class Cvss3Test extends PHPUnit_Framework_TestCase
         $this->assertTrue('Medium' === $cvss->getRatings()['envRating']);
     }
 
-=======
+
     public function testVector7()
     {
         $vector = "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:L/I:L/A:N/E:X/RL:X/CR:X/IR:X/MAV:X/MAC:X/MPR:X/MUI:X/MS:X/MC:X/MI:X/MA:X";
         $cvss = new Cvss3;
         $cvss->register($vector);
     }
->>>>>>> Stashed changes
 
 
     /**
