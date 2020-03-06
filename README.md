@@ -10,12 +10,12 @@
 ### Version
 
 #### dev-master
-Identical to 2.1.1
+Identical to 2.1.1 actually
 
-#### [2.1.1(https://github.com/security-database/cvssv3/releases/tag/v2.1.1)]
+#### 2.1.1
 - Travis and Composer update : php 5.6 -> 7.3 phpunit
 
-#### [2.1.0(https://github.com/security-database/cvssv3/releases/tag/v2.1.0)]
+#### 2.1.0
 - CVSS 3.1 Upgrade
 - Backward compatible with 3.0 -> accept 3.0 as input, output 3.1 vector
 - Documentation upgrade to 3.1
@@ -23,17 +23,17 @@ Identical to 2.1.1
 - Upgrade tests case to 3.1 and 3.0 vector in input give 3.1 vector in output
 - Removed @version in Cvssv3.php
 
-#### [2.0.3(https://github.com/security-database/cvssv3/releases/tag/v2.0.3)]
+#### 2.0.3
 - EnvScore calcultation fix with MPR and Scope when MS is not set (again)
 - Cleaner code push by @faynwol
 - Add some UnitTest on vectors vs CVSSv3 website
 
-#### [2.0.2(https://github.com/security-database/cvssv3/releases/tag/v2.0.2)]
+#### 2.0.2
 - EnvScore calcultation fix with MPR and Scope when MS is not set
 - EnvScore Formula, with now 2 RoundUp instead of One
 - Add some UnitTest on vectors vs CVSSv3 website
 
-#### [2.0.1(https://github.com/security-database/cvssv3/releases/tag/v2.0.1)]
+#### 2.0.1
 - EnvScore calcultation fix when envModifiedImpactSubScore <= 0
 - EnvScore Formula set to 0 in that case
 - Change some props to static
