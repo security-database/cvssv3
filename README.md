@@ -10,7 +10,10 @@
 ###Version
 
 #### dev-master
-Identical to 2.1.0
+Identical to 2.1.1
+
+####2.1.1
+- Travis and Composer update : php 5.6 -> 7.3 phpunit
 
 ####2.1.0
 - CVSS 3.1 Upgrade
