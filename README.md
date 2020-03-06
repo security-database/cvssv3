@@ -1,4 +1,4 @@
-##PHP Class for CVSS v3 Calculator
+## PHP Class for CVSS v3 Calculator
 
 [![Build Status](https://travis-ci.org/security-database/cvssv3.svg?branch=master)](https://travis-ci.org/security-database/cvssv3)
 
@@ -7,15 +7,15 @@
 [![Latest Unstable Version](https://poser.pugx.org/security-database/cvss/v/unstable)](//packagist.org/packages/security-database/cvss)
 [![License](https://poser.pugx.org/security-database/cvss/license)](https://packagist.org/packages/security-database/cvss)
 
-###Version
+### Version
 
 #### dev-master
 Identical to 2.1.1
 
-####2.1.1
+#### 2.1.1
 - Travis and Composer update : php 5.6 -> 7.3 phpunit
 
-####2.1.0
+#### 2.1.0
 - CVSS 3.1 Upgrade
 - Backward compatible with 3.0 -> accept 3.0 as input, output 3.1 vector
 - Documentation upgrade to 3.1
@@ -23,23 +23,23 @@ Identical to 2.1.1
 - Upgrade tests case to 3.1 and 3.0 vector in input give 3.1 vector in output
 - Removed @version in Cvssv3.php
 
-####2.0.3
+#### 2.0.3
 - EnvScore calcultation fix with MPR and Scope when MS is not set (again)
 - Cleaner code push by @faynwol
 - Add some UnitTest on vectors vs CVSSv3 website
 
-####2.0.2
+#### 2.0.2
 - EnvScore calcultation fix with MPR and Scope when MS is not set
 - EnvScore Formula, with now 2 RoundUp instead of One
 - Add some UnitTest on vectors vs CVSSv3 website
 
-####2.0.1
+#### 2.0.1
 - EnvScore calcultation fix when envModifiedImpactSubScore <= 0
 - EnvScore Formula set to 0 in that case
 - Change some props to static
 - Change Clean method to handle static properties
 
-####2.0
+#### 2.0
 - Change public vars to private vars
 - Add getter to all private vars
 - Add setter to locale vars
@@ -51,7 +51,7 @@ Identical to 2.1.1
 
 - Todo more and more phpUnit test case ...
 
-####1.3.2
+#### 1.3.2
 - Modify DocBlock with \Exception
 - Add a Clean() function to be able to clean Object before register another one
 - Add public vector_part (Base, Temp and Env vector part)
@@ -65,26 +65,26 @@ Identical to 2.1.1
 - Add a constructor that load language files
 - Add a reverse vector checker
 
-####1.3.1
+#### 1.3.1
 - Fix envImpactSubScoreMultiplier
 - Add Scores priority
 
-####1.3.0
+#### 1.3.0
 - Fix - Errors on calculation, specific on Modified Scope
 - Fix - Modified scores -> weight (float)
 - Rework - Modified scores with normalized names - easy to read the code now
 - Added - Multi language Label
 
-###Common Vulnerability Scoring System Version 3.1
+### Common Vulnerability Scoring System Version 3.1
 
 Common Vulnerability Scoring System (CVSS) is a free and open industry standard for assessing the severity of computer system security vulnerabilities. It is under the custodianship of NIST. It attempts to establish a measure of how much concern a vulnerability warrants, compared to other vulnerabilities, so efforts can be prioritized. The scores are based on a series of measurements (called metrics) based on expert assessment. The scores range from 0 to 10. Vulnerabilities with a base score in the range 7.0-10.0 are High, those in the range 4.0-6.9 as Medium, and 0-3.9 as Low. Class try to follow PSR2 standard except for some 120chars on formula.
 
-###License
+### License
 This piece of software is under [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-###PHP Class
+### PHP Class
 
-####Initialization
+#### Initialization
 
 Could be composer:
 
@@ -119,7 +119,7 @@ try {
 }
 ```
 
-####Usage
+#### Usage
 You can now get some informations :
 
 Get weight of every piece of the vector (array());
@@ -242,5 +242,5 @@ print $cvss->getVector();
 */
 ```
 
-####Contribute
+#### Contribute
 If you found any error on the class, please, fork it, push a PR or contact us at "info at security-database.com"
