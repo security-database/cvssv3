@@ -9,6 +9,16 @@
 
 ###Version
 
+#### dev-master
+Identical to 2.1.0
+
+####2.1.0
+- CVSS 3.1 Upgrade
+- Backward compatible with 3.0 -> accept 3.0 as input, output 3.1 vector
+- Documentation upgrade to 3.1
+- Our Cvss3::roundUp(), major upgrade in 3.1 from 3.0 seem to work fine (actually used in 3.0)
+- Upgrade tests case to 3.1 and 3.0 vector in input give 3.1 vector in output
+- Removed @version in Cvssv3.php
 
 ####2.0.3
 - EnvScore calcultation fix with MPR and Scope when MS is not set (again)
@@ -62,7 +72,7 @@
 - Rework - Modified scores with normalized names - easy to read the code now
 - Added - Multi language Label
 
-###Common Vulnerability Scoring System Version 3.0
+###Common Vulnerability Scoring System Version 3.1
 
 Common Vulnerability Scoring System (CVSS) is a free and open industry standard for assessing the severity of computer system security vulnerabilities. It is under the custodianship of NIST. It attempts to establish a measure of how much concern a vulnerability warrants, compared to other vulnerabilities, so efforts can be prioritized. The scores are based on a series of measurements (called metrics) based on expert assessment. The scores range from 0 to 10. Vulnerabilities with a base score in the range 7.0-10.0 are High, those in the range 4.0-6.9 as Medium, and 0-3.9 as Low. Class try to follow PSR2 standard except for some 120chars on formula.
 
@@ -90,7 +100,7 @@ use SecurityDatabase\Cvss\Cvss3;
 
 try {
 	$cvss = new Cvss3();
-	$cvss->register("CVSS:3.0/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L");
+	$cvss->register("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L");
 	
     print_r($cvss->getWeight());
     print_r($cvss->getScores());
@@ -225,7 +235,7 @@ Get the vector
 print $cvss->getVector();
 
 /* return a string :
-   CVSS:3.0/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L
+   CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L
 */
 ```
 

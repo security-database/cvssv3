@@ -19,7 +19,6 @@
  * @desc Class to get and calculate CVSS v3 scores
  * @author Security-Database <info@security-database.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- * @version 1.3.2
  * @package CVSSv3
  */
 
@@ -31,12 +30,12 @@ use Exception;
 
 class Cvss3
 {
-    const VERSION = '3.0';
+    const VERSION = '3.1';
 
     /**
      * @var string
      */
-    private static $vector_head = "CVSS:3.0";
+    private static $vector_head = "CVSS:3.1";
 
     /**
      * @var string
@@ -58,13 +57,14 @@ class Cvss3
     /**
      * @var array
      */
-    private $scores = array("baseScore" => "NA",
-                            "impactSubScore" => "NA",
-                            "exploitabalitySubScore" => "NA",
-                            "temporalScore" => "NA",
-                            "envScore" => "NA",
-                            "envModifiedImpactSubScore" => "NA",
-                            "overallScore" => "NA"
+    private $scores = array(
+        "baseScore" => "NA",
+        "impactSubScore" => "NA",
+        "exploitabalitySubScore" => "NA",
+        "temporalScore" => "NA",
+        "envScore" => "NA",
+        "envModifiedImpactSubScore" => "NA",
+        "overallScore" => "NA"
     );
     /**
      * @var array
@@ -111,6 +111,9 @@ class Cvss3
      */
     private static $env = array ('CR', 'IR', 'AR', 'MAV', 'MAC', 'MPR', 'MUI', 'MS', 'MC', 'MI', 'MA');
 
+    /**
+     * @var array
+     */
     private static $metrics_check_mandatory = array(
         "AV" => "[N,A,L,P]",
         "AC" => "[L,H]",
@@ -122,6 +125,9 @@ class Cvss3
         "A"  => "[N,L,H]"
     );
 
+    /**
+     * @var array
+     */
     private static $metrics_check_optional = array(
         "E"  => "[X,U,P,F,H]",
         "RL" => "[X,O,T,W,U]",
@@ -131,6 +137,9 @@ class Cvss3
         "AR" => "[X,L,M,H]"
     );
 
+    /**
+     * @var array
+     */
     private static $metrics_check_modified = array(
         "MAV" => "[X,N,A,L,P]",
         "MAC" => "[X,L,H]",
@@ -142,6 +151,9 @@ class Cvss3
         "MA"  => "[X,N,L,H]"
     );
 
+    /**
+     * @var array
+     */
     private static $metrics_level_mandatory = array(
         "AV" => array(
             "N" => 0.85,
@@ -185,6 +197,9 @@ class Cvss3
         )
     );
 
+    /**
+     * @var array
+     */
     private static $metrics_level_optional = array(
         "E"  => array(
             "X" => 1,
@@ -226,6 +241,9 @@ class Cvss3
         )
     );
 
+    /**
+     * @var array
+     */
     private static $metrics_level_modified = array(
         "MAV" => array(
             "X" => 0,
@@ -483,9 +501,10 @@ class Cvss3
      */
     private function explodeVector($vector)
     {
-        if (!preg_match('/^CVSS:3.0.*/mi', $vector)) {
-            throw new Exception("ERROR: Vector is not valid", __LINE__);
+        if (!preg_match('/^CVSS:3.[0-1]{1}.*/mi', $vector)) {
+            throw new Exception("ERROR: Vector is not valid: ".$vector, __LINE__);
         }
+        $vector = str_replace("CVSS:3.1/", "", $vector);
         $vector = str_replace("CVSS:3.0/", "", $vector);
         $vector_input_array_temp = explode('/', $vector);
 
@@ -608,12 +627,14 @@ class Cvss3
                 if (
                     (isset($this->vector_input_array["MS"]) == false || $this->vector_input_array["MS"] == "X")
                     && $this->vector_input_array['S'] == 'C'
-                    || (isset($this->vector_input_array["MS"]) == true &&  $this->vector_input_array["MS"] == "C")) {
+                    || (isset($this->vector_input_array["MS"]) == true &&  $this->vector_input_array["MS"] == "C")
+                ) {
                     $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Scope"];
                 } elseif (
                     (isset($this->vector_input_array["MS"]) == false || $this->vector_input_array["MS"] == "X")
                     && $this->vector_input_array['S'] == 'U'
-                    || (isset($this->vector_input_array["MS"]) == true && $this->vector_input_array["MS"] == "U")) {
+                    || (isset($this->vector_input_array["MS"]) == true && $this->vector_input_array["MS"] == "U")
+                ) {
                     $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Default"];
                 }
             } else {
@@ -825,8 +846,7 @@ class Cvss3
                 )
                 * $this->weight["E"]
                 * $this->weight["RL"]
-                * $this->weight["RC"]
-                ,
+                * $this->weight["RC"],
                 1
             );
 
@@ -842,14 +862,12 @@ class Cvss3
                         * ($this->sub_scores["envModifiedImpactSubScore"]
                             + $this->sub_scores["envModifiedExploitabalitySubScore"]
                         )
-                    )
-                    ,
+                    ),
                     1
                 )
                 * $this->weight["E"]
                 * $this->weight["RL"]
-                * $this->weight["RC"]
-                ,
+                * $this->weight["RC"],
                 1
             );
 
