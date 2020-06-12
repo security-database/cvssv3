@@ -1,6 +1,6 @@
 <?php
 /**
- *  Common Vulnerability Scoring System Version 3.0 Calculator
+ *  Common Vulnerability Scoring System Version 3.1 Calculator
  *
  *  Copyright [2015] [Security-Database]
  *
@@ -312,14 +312,14 @@ class Cvss3
             throw new Exception('Locale is not set', __LINE__);
         }
 
-        if (array_search($this->lang, ResourceBundle::getLocales('')) === false) {
+        if (array_search($this->lang, ResourceBundle::getLocales(''), true) === false) {
             throw new Exception('Not a valid locale', __LINE__);
         }
 
-        if (is_file(__DIR__ . '/Cvss3.' . self::getLocale() . '.php') === false) {
+        if (is_file(__DIR__ . '/Cvss3.' . $this->getLocale() . '.php') === false) {
             throw new Exception('Traduction file does not exist', __LINE__);
         } else {
-            include_once(__DIR__ . '/Cvss3.' . self::getLocale() . '.php');
+            include_once(__DIR__ . '/Cvss3.' . $this->getLocale() . '.php');
         }
     }
 
@@ -333,18 +333,18 @@ class Cvss3
             throw new Exception("ERROR: Vector is not defined", __LINE__);
         }
 
-        self::clean();
+        $this->clean();
 
-        self::explodeVector($vector);
-        self::checkInput();
-        self::checkMandatory();
-        self::checkOptional();
-        self::checkModified();
-        self::constructWeights();
-        self::calculate();
-        self::constructRatings();
-        self::constructVector();
-        self::buildLanguage();
+        $this->explodeVector($vector);
+        $this->checkInput();
+        $this->checkMandatory();
+        $this->checkOptional();
+        $this->checkModified();
+        $this->constructWeights();
+        $this->calculate();
+        $this->constructRatings();
+        $this->constructVector();
+        $this->buildLanguage();
     }
 
     /**
@@ -375,7 +375,7 @@ class Cvss3
             throw new Exception('Locale is not set', __LINE__);
         }
 
-        if (array_search($lang, ResourceBundle::getLocales('')) === false) {
+        if (array_search($lang, ResourceBundle::getLocales(''), true) === false) {
             throw new Exception('Not a valid locale', __LINE__);
         }
 
@@ -491,7 +491,8 @@ class Cvss3
     /**
      * @return array
      */
-    public function getRatings() {
+    public function getRatings()
+    {
         return $this->severityRatings;
     }
 
@@ -504,8 +505,7 @@ class Cvss3
         if (!preg_match('/^CVSS:3.[0-1]{1}.*/mi', $vector)) {
             throw new Exception("ERROR: Vector is not valid: ".$vector, __LINE__);
         }
-        $vector = str_replace("CVSS:3.1/", "", $vector);
-        $vector = str_replace("CVSS:3.0/", "", $vector);
+        $vector = str_replace(array("CVSS:3.1/", "CVSS:3.0/"), "", $vector);
         $vector_input_array_temp = explode('/', $vector);
 
         foreach ($vector_input_array_temp as $k => $v) {
@@ -541,6 +541,8 @@ class Cvss3
                 if (!preg_match("|" . $value_optional . "|", $this->vector_input_array[$metrics_optional])) {
                     throw new Exception("ERROR: " . $metrics_optional . " error in value", __LINE__);
                 }
+            } else {
+                $this->vector_input_array[$metrics_optional] = "X";
             }
         }
     }
@@ -551,10 +553,12 @@ class Cvss3
     private function checkModified()
     {
         foreach (self::$metrics_check_modified as $metrics_modified => $value_modified) {
-            if (isset($this->vector_input_array[$value_modified])) {
-                if (!preg_match("|" . $value_modified . "|", $this->vector_input_array[$value_modified])) {
+            if (isset($this->vector_input_array[$metrics_modified])) {
+                if (!preg_match("|" . $value_modified . "|", $this->vector_input_array[$metrics_modified])) {
                     throw new Exception("ERROR: " . $metrics_modified . " error in value", __LINE__);
                 }
+            } else {
+                $this->vector_input_array[$metrics_modified] = "X";
             }
         }
     }
@@ -623,20 +627,26 @@ class Cvss3
 
         //Modified
         foreach ($this->vector_input_array as $metric => $value) {
-            if ($metric == "MPR" && ($value == "L" || $value == "H")) {
-                if (
-                    (isset($this->vector_input_array["MS"]) == false || $this->vector_input_array["MS"] == "X")
-                    && $this->vector_input_array['S'] == 'C'
-                    || (isset($this->vector_input_array["MS"]) == true &&  $this->vector_input_array["MS"] == "C")
-                ) {
-                    $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Scope"];
-                } elseif (
-                    (isset($this->vector_input_array["MS"]) == false || $this->vector_input_array["MS"] == "X")
-                    && $this->vector_input_array['S'] == 'U'
-                    || (isset($this->vector_input_array["MS"]) == true && $this->vector_input_array["MS"] == "U")
-                ) {
-                    $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Default"];
+            if ($metric == "MPR") {
+                $modifiedScope = isset($this->vector_input_array['MS']) && $this->vector_input_array['MS'] != 'X' ? $this->vector_input_array['MS'] : $this->vector_input_array['S'];
+                if ($value == "X") {
+                    if ($this->vector_input_array["PR"] == "N") {
+                        $this->weight[$metric] = (float)self::$metrics_level_mandatory["PR"][$this->vector_input_array["PR"]];
+                    } elseif ($modifiedScope == "U") {
+                        $this->weight[$metric] = (float)self::$metrics_level_mandatory["PR"][$this->vector_input_array["PR"]]["Default"];
+                    } elseif ($modifiedScope == "C") {
+                        $this->weight[$metric] = (float)self::$metrics_level_mandatory["PR"][$this->vector_input_array["PR"]]["Scope"];
+                    }
+                } elseif ($value == "L" || $value == "H") {
+                    if ($modifiedScope == "U") {
+                        $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Default"];
+                    } elseif ($modifiedScope == "C") {
+                        $this->weight[$metric] = (float)self::$metrics_level_modified[$metric][$value]["Scope"];
+                    }
+                } else {
+                    $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
                 }
+
             } else {
                 if (isset(self::$metrics_level_modified[$metric][$value])) {
                     if ($value != 'X') {
@@ -871,7 +881,8 @@ class Cvss3
                 1
             );
 
-            $this->formula["envScore"] = "roundUp(self::roundUp(min(10 , 1.08 * (" . $this->sub_scores["envModifiedImpactSubScore"]
+            $this->formula["envScore"] = "roundUp(self::roundUp(min(10 , 1.08 * ("
+                . $this->sub_scores["envModifiedImpactSubScore"]
                 . " + " . $this->sub_scores["envModifiedExploitabalitySubScore"] . " ),1) * " . $this->weight["E"]
                 . " * " . $this->weight["RL"] . " * " . $this->weight["RC"] . ",1)";
         }
@@ -907,7 +918,8 @@ class Cvss3
         }
     }
 
-    private function constructRatings() {
+    private function constructRatings()
+    {
         foreach (self::$severityRatingsRange as $k => $v) {
             if ($this->severityRatings['baseRating'] === 'NA' &&
                 $this->scores['baseScore'] >= $v['bottom'] && $this->scores['baseScore'] <= $v['top']) {
@@ -992,6 +1004,7 @@ class Cvss3
 
     /**
      *
+     * @throws \ReflectionException
      */
     private function clean()
     {

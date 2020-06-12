@@ -1,4 +1,4 @@
-## PHP Class for CVSS v3 Calculator
+## PHP Class for CVSS v3.0 / v3.1 Calculator
 
 [![Build Status](https://travis-ci.org/security-database/cvssv3.svg?branch=master)](https://travis-ci.org/security-database/cvssv3)
 
@@ -10,7 +10,13 @@
 ### Version
 
 #### dev-master
-Identical to 2.1.1 actually
+Identical to 2.2 actually
+
+#### 2.2
+- Correction on MPR / PR calculation (could bewrong in some case)
+- Added a test 8 to check
+- Added optional and modification to X if not set (for better calculation)
+- Correction of checkModified()
 
 #### 2.1.1
 - Travis and Composer update : php 5.6 -> 7.3 phpunit
@@ -102,9 +108,9 @@ After that, create a new vector.
 use SecurityDatabase\Cvss\Cvss3;
 
 try {
-	$cvss = new Cvss3();
-	$cvss->register("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L");
-	
+    $cvss = new Cvss3();
+    $cvss->register("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N/E:P/RL:W/CR:L/IR:L/MAV:A/MAC:H/MPR:L/MUI:N/MS:U/MC:L/MI:L/MA:L");
+
     print_r($cvss->getWeight());
     print_r($cvss->getScores());
     print_r($cvss->getScoresLabel());
@@ -115,7 +121,7 @@ try {
     (...)
 
 } catch (Exception $e) {
-	print $e->getCode()." : ".$e->getMessage();
+    print $e->getCode() . " : " . $e->getMessage();
 }
 ```
 

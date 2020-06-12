@@ -139,6 +139,7 @@ class Cvss3Test extends PHPUnit_Framework_TestCase
         $vector = "CVSS:3.1/AV:A/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:H/E:P/RL:O/RC:U/IR:M/AR:H/MAV:L/MUI:R/MS:C/MC:L/MI:N";
         $cvss = new Cvss3;
         $cvss->register($vector);
+        print_R($cvss);
         $this->assertTrue(8.0 === (float)$cvss->getScores()["baseScore"]);
         $this->assertTrue(6.6 === (float)$cvss->getScores()["temporalScore"]);
         $this->assertTrue(7.1 === (float)$cvss->getScores()["envScore"]);
@@ -182,6 +183,15 @@ class Cvss3Test extends PHPUnit_Framework_TestCase
         $cvss->register($vector);
     }
 
+    public function testVector8()
+    {
+        $vector = "CVSS:3.0/AV:N/AC:L/PR:H/UI:N/S:C/C:H/I:L/A:N/RC:R/CR:H/MAC:H/MS:U";
+        $cvss = new Cvss3;
+        $cvss->register($vector);
+        $this->assertTrue(7.6 === (float)$cvss->getScores()["baseScore"]);
+        $this->assertTrue(7.3 === (float)$cvss->getScores()["temporalScore"]);
+        $this->assertTrue(6.2 === (float)$cvss->getScores()["envScore"]);
+    }
 
     /**
      * @expectedException Exception

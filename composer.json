@@ -5,6 +5,7 @@
   "keywords": ["cvss","cvssv3", "security"],
   "homepage": "https://github.com/security-database/cvssv3",
   "license": "Apache-2.0",
+
   "authors": [
     {
       "name": "Security-Database",
