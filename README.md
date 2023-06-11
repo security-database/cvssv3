@@ -116,6 +116,7 @@ try {
     print_r($cvss->getScoresLabel());
     print_r($cvss->getSubScores());
     print_r($cvss->getSubScoresLabel());
+    print_r($cvss->getRatings());
     print_r($cvss->getFormula());
     print_r($cvss->getVector());
     (...)
@@ -220,6 +221,16 @@ array (size=9)
 */
 ```
 
+Get Severity Ratings used in severityRatings (array());
+```php
+print_r($cvss->getRatings());
+/*
+array (size=3)
+    'baseRating' => string 'Low' (length=3)
+    'tempRating' => string 'Low' (length=3)
+    'envRating' => string 'Low' (length=3)
+*/
+```
 
 Get Formula with detail
 ```php
