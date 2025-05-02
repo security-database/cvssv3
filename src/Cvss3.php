@@ -456,6 +456,18 @@ class Cvss3
         return $this->vector_input_array;
     }
 
+	/**
+	 * @return string
+     * Returns the vector as used by NIST NVD website
+	 */
+	public function getVectorSorted()
+	{
+		$value = "";
+		foreach(array_merge(self::$base,self::$tmp,self::$env) as $key): $value .= "/" . $key . ":" . $this->vector_input_array[$key]; endforeach;
+
+		return substr($value,1);
+	}
+
     /**
      * @return array
      */
@@ -675,6 +687,14 @@ class Cvss3
                 $this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
             }
         }
+
+		// Prevent modified values from being higer then mandatory values
+		foreach (self::$metrics_level_modified as $metric => $level) {
+			if ($this->weight[$metric] > $this->weight[substr($metric,1)]) {
+				$this->weight[$metric] = (float)$this->weight[substr($metric, 1)];
+				$this->vector_input_array[$metric] = $this->vector_input_array[substr($metric,1)];
+			}
+		}
     }
 
     /**
