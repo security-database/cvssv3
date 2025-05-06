@@ -233,4 +233,12 @@ class Cvss3Test extends PHPUnit_Framework_TestCase
         $this->assertTrue(4.1 === (float)Cvss3::roundUp(4.02, 1));
         $this->assertTrue(4.00 === (float)Cvss3::roundUp(4.0, 1));
     }
+
+    public function testBaseBeforeEnvironmental()
+    {
+        $vector = "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H/RL:U/RC:C/CR:H/IR:H/AR:H/MAV:N/MAC:H/MPR:L/MUI:R/MS:C/MC:L/MI:L/MA:N";
+        $cvss = new Cvss3;
+        $cvss->register($vector);
+        $this->assertGreaterThanOrEqual($this->weight("AV"),$this->weight("MAV"));        
+    }
 }
